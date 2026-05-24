@@ -6,40 +6,42 @@ export function Projects() {
   const { projects, loading, error } = useProjects()
 
   return (
-    <section id="projects" className="py-24 px-6 bg-white dark:bg-slate-950">
+    <section id="projects" className="relative py-28 px-6 bg-[#05070f]">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
+
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' as const }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-16"
         >
-          <p className="text-indigo-500 dark:text-indigo-400 font-semibold text-sm tracking-widest uppercase mb-3">
-            My Work
+          <p className="font-mono-label text-xs text-indigo-400 tracking-[0.25em] uppercase mb-3">
+            // my.work
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
             Featured Projects
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            A selection of projects that showcase my full-stack development and QA skills.
+          <p className="text-slate-500 max-w-lg text-sm leading-relaxed">
+            A selection of projects that showcase my full-stack development, AI integration, and QA skills.
           </p>
         </motion.div>
 
         {/* Loading skeleton */}
         {loading && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map(i => (
               <div
                 key={i}
-                className="rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 animate-pulse"
+                className="rounded-xl card-glass animate-pulse"
               >
-                <div className="h-48 bg-slate-200 dark:bg-slate-700 rounded-t-2xl" />
-                <div className="p-6 flex flex-col gap-3">
-                  <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded-full" />
-                  <div className="h-5 w-3/4 bg-slate-200 dark:bg-slate-700 rounded-full" />
-                  <div className="h-3 w-full bg-slate-200 dark:bg-slate-700 rounded-full" />
-                  <div className="h-3 w-5/6 bg-slate-200 dark:bg-slate-700 rounded-full" />
+                <div className="h-44 bg-white/3 rounded-t-xl" />
+                <div className="p-5 flex flex-col gap-3">
+                  <div className="h-2.5 w-20 bg-white/5 rounded-full" />
+                  <div className="h-4 w-3/4 bg-white/5 rounded-full" />
+                  <div className="h-2.5 w-full bg-white/5 rounded-full" />
+                  <div className="h-2.5 w-5/6 bg-white/5 rounded-full" />
                 </div>
               </div>
             ))}
@@ -49,25 +51,21 @@ export function Projects() {
         {/* Error state */}
         {error && !loading && (
           <div className="text-center py-16">
-            <p className="text-slate-500 dark:text-slate-400 mb-2">
-              Could not load projects right now.
-            </p>
-            <p className="text-xs text-slate-400 dark:text-slate-600">{error}</p>
+            <p className="font-mono-label text-xs text-slate-600 mb-1">ERR_LOAD_FAILED</p>
+            <p className="text-slate-500 text-sm">Could not load projects right now.</p>
           </div>
         )}
 
         {/* Empty state */}
         {!loading && !error && projects.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-slate-500 dark:text-slate-400">
-              Projects coming soon.
-            </p>
+            <p className="font-mono-label text-xs text-slate-600">// projects coming soon</p>
           </div>
         )}
 
         {/* Project cards */}
         {!loading && !error && projects.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}
