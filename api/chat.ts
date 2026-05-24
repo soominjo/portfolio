@@ -100,6 +100,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) {
+    console.error('[/api/chat] GEMINI_API_KEY is not set')
     return res.status(500).json({ success: false, error: 'Chatbot not configured' })
   }
 
@@ -135,7 +136,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({ success: true, reply })
   } catch (err: unknown) {
-    console.error('[/api/chat]', err)
-    return res.status(500).json({ success: false, error: 'Failed to get response' })
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[/api/chat] Gemini error:', msg)
+    return res.status(500).json({ success: false, error: msg })
   }
 }
