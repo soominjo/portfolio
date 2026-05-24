@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import Groq from 'groq-sdk'
 
 const SYSTEM_PROMPT = `You are a friendly AI assistant on Genessis Contreras's portfolio website.
 Your role is to answer questions from recruiters, HR professionals, and visitors who want to learn about Genessis.
@@ -98,9 +98,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ success: false, error: 'Method not allowed' })
   }
 
-  const apiKey = process.env.GEMINI_API_KEY
+  const apiKey = process.env.GROQ_API_KEY
   if (!apiKey) {
-    console.error('[/api/chat] GEMINI_API_KEY is not set')
+    console.error('[/api/chat] GROQ_API_KEY is not set')
     return res.status(500).json({ success: false, error: 'Chatbot not configured' })
   }
 
@@ -115,25 +115,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(apiKey)
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
-      systemInstruction: SYSTEM_PROMPT,
-    })
+    const groq = new Groq({ apiKey })
 
     const history = Array.isArray(messages)
       ? messages
           .filter((m: ChatMessage) => m.role === 'user' || m.role === 'model')
           .map((m: ChatMessage) => ({
-            role: m.role,
-            parts: [{ text: m.content }],
+            role: m.role === 'model' ? 'assistant' : 'user' as 'user' | 'assistant',
+            content: m.content,
           }))
       : []
 
-    const chat = model.startChat({ history })
-    const result = await chat.sendMessage(message.trim())
-    const reply = result.response.text()
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.1-8b-instant',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...history,
+        { role: 'user', content: message.trim() },
+      ],
+      max_tokens: 1024,
+    })
 
+    const reply = completion.choices[0]?.message?.content ?? ''
     return res.status(200).json({ success: true, reply })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
