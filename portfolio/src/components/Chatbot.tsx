@@ -58,7 +58,7 @@ export function Chatbot() {
         ...prev,
         {
           role: 'assistant',
-          content: data.success ? data.reply : "Sorry, I couldn't get a response right now. Please try again.",
+          content: data.success ? data.reply : `Error: ${data.error ?? 'Unknown error'}`,
         },
       ])
     } catch {
