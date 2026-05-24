@@ -93,8 +93,8 @@ export function Contact() {
               {
                 icon: <LinkedInIcon />,
                 label: 'LinkedIn',
-                value: 'linkedin.com/in/genessis-contreras',
-                href: 'https://linkedin.com/in/genessis-contreras',
+                value: 'linkedin.com/in/genessis-contreras-28320a375',
+                href: 'https://www.linkedin.com/in/genessis-contreras-28320a375/',
               },
             ].map(item => (
               <a

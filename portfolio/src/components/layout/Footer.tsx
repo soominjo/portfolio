@@ -18,7 +18,7 @@ export function Footer() {
             <GitHubIcon />
           </a>
           <a
-            href="https://linkedin.com/in/genessis-contreras"
+            href="https://www.linkedin.com/in/genessis-contreras-28320a375/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
