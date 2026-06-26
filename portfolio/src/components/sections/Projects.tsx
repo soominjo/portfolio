@@ -1,21 +1,34 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useProjects } from '../../hooks/useProjects'
 import { ProjectCard } from './ProjectCard'
+import type { ProjectCategory } from '../../types/project'
+
+const tabs: { id: ProjectCategory; label: string; mono: string }[] = [
+  { id: 'engineering', label: 'Engineering', mono: '// software.dev' },
+  { id: 'qa', label: 'QA Engineering', mono: '// quality.assurance' },
+]
 
 export function Projects() {
-  const { projects, loading, error } = useProjects()
+  const { projects } = useProjects()
+  const [activeTab, setActiveTab] = useState<ProjectCategory>('engineering')
+
+  const filtered = projects.filter(p => p.category === activeTab)
+  const activeTabData = tabs.find(t => t.id === activeTab)!
 
   return (
     <section id="projects" className="relative py-28 px-6 bg-[#05070f]">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
 
       <div className="max-w-6xl mx-auto">
+
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-16"
+          className="mb-12"
         >
           <p className="font-mono-label text-xs text-indigo-400 tracking-[0.25em] uppercase mb-3">
             // my.work
@@ -24,53 +37,69 @@ export function Projects() {
             Featured Projects
           </h2>
           <p className="text-slate-500 max-w-lg text-sm leading-relaxed">
-            A selection of projects that showcase my full-stack development, AI integration, and QA skills.
+            Projects spanning full-stack engineering and quality assurance — two sides of how I ship reliable software.
           </p>
         </motion.div>
 
-        {/* Loading skeleton */}
-        {loading && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => (
-              <div
-                key={i}
-                className="rounded-xl card-glass animate-pulse"
+        {/* Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative flex gap-0 border-b border-white/6 mb-12"
+        >
+          {tabs.map(tab => {
+            const count = projects.filter(p => p.category === tab.id).length
+            const isActive = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative font-mono-label text-xs tracking-widest uppercase py-3 px-5 transition-colors duration-200 ${
+                  isActive ? 'text-white' : 'text-slate-600 hover:text-slate-400'
+                }`}
               >
-                <div className="h-44 bg-white/3 rounded-t-xl" />
-                <div className="p-5 flex flex-col gap-3">
-                  <div className="h-2.5 w-20 bg-white/5 rounded-full" />
-                  <div className="h-4 w-3/4 bg-white/5 rounded-full" />
-                  <div className="h-2.5 w-full bg-white/5 rounded-full" />
-                  <div className="h-2.5 w-5/6 bg-white/5 rounded-full" />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+                {tab.label}
+                <span className={`ml-2 text-[10px] ${isActive ? 'text-indigo-400' : 'text-slate-700'}`}>
+                  {count}
+                </span>
+                {isActive && (
+                  <motion.div
+                    layoutId="tab-underline"
+                    className="absolute bottom-0 left-0 right-0 h-px bg-indigo-500"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </button>
+            )
+          })}
+        </motion.div>
 
-        {/* Error state */}
-        {error && !loading && (
-          <div className="text-center py-16">
-            <p className="font-mono-label text-xs text-slate-600 mb-1">ERR_LOAD_FAILED</p>
-            <p className="text-slate-500 text-sm">Could not load projects right now.</p>
-          </div>
-        )}
+        {/* Active tab label */}
+        <motion.p
+          key={activeTab}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="font-mono-label text-[10px] text-slate-700 tracking-widest uppercase mb-6"
+        >
+          {activeTabData.mono}
+        </motion.p>
 
-        {/* Empty state */}
-        {!loading && !error && projects.length === 0 && (
-          <div className="text-center py-16">
-            <p className="font-mono-label text-xs text-slate-600">// projects coming soon</p>
-          </div>
-        )}
+        {/* Project grid */}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {filtered.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </motion.div>
 
-        {/* Project cards */}
-        {!loading && !error && projects.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
-            ))}
-          </div>
-        )}
       </div>
     </section>
   )
