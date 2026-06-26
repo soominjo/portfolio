@@ -2,6 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
 import { initializeApp, getApps, cert } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
+import { notificationEmail } from './emails/notification'
+import { confirmationEmail } from './emails/confirmation'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -20,6 +22,10 @@ const db = getFirestore()
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+function formatTimestamp(date: Date): string {
+  return date.toISOString().replace('T', ' · ').slice(0, 19) + ' UTC'
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -50,19 +56,42 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // 1. Save to Firestore first — ensures no message is lost even if email fails
     await db.collection('contact_messages').add(sanitized)
 
-    // 2. Send email via Resend
-    await resend.emails.send({
-      from: 'Portfolio Contact <onboarding@resend.dev>',
-      to: process.env.PERSONAL_CONTACT_EMAIL!,
-      replyTo: sanitized.senderEmail,
-      subject: `Portfolio message from ${sanitized.senderName}`,
-      text: `From: ${sanitized.senderName} <${sanitized.senderEmail}>\n\n${sanitized.message}`,
-      html: `
-        <p><strong>From:</strong> ${sanitized.senderName} &lt;${sanitized.senderEmail}&gt;</p>
-        <p><strong>Message:</strong></p>
-        <p>${sanitized.message.replace(/\n/g, '<br>')}</p>
-      `,
-    })
+    const receivedAt = formatTimestamp(sanitized.createdAt)
+
+    // 2. Send both emails concurrently — notification to Genessis + auto-reply to sender
+    const [notificationResult, confirmationResult] = await Promise.allSettled([
+      resend.emails.send({
+        from: 'Portfolio Contact <onboarding@resend.dev>',
+        to: process.env.PERSONAL_CONTACT_EMAIL!,
+        replyTo: sanitized.senderEmail,
+        subject: `Portfolio message from ${sanitized.senderName}`,
+        html: notificationEmail({
+          senderName: sanitized.senderName,
+          senderEmail: sanitized.senderEmail,
+          message: sanitized.message,
+          receivedAt,
+        }),
+      }),
+      resend.emails.send({
+        from: 'Genessis Contreras <onboarding@resend.dev>',
+        to: sanitized.senderEmail,
+        subject: `Got your message — I'll be in touch soon`,
+        html: confirmationEmail({
+          senderName: sanitized.senderName,
+          message: sanitized.message,
+        }),
+      }),
+    ])
+
+    // Notification to owner is the critical path — fail the request if it didn't send
+    if (notificationResult.status === 'rejected') {
+      throw notificationResult.reason
+    }
+
+    // Log but don't fail if the auto-reply couldn't send
+    if (confirmationResult.status === 'rejected') {
+      console.warn('[/api/contact] Auto-reply failed:', confirmationResult.reason)
+    }
 
     return res.status(200).json({ success: true })
   } catch (err: unknown) {
