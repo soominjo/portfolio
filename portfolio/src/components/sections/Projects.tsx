@@ -93,11 +93,21 @@ export function Projects() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-6 gap-6"
         >
-          {filtered.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+          {filtered.map((project, index) => {
+            const isBottomRow = filtered.length === 5 && index >= 3
+            const colClass = isBottomRow && index === 3
+              ? 'col-start-2 col-span-2'
+              : isBottomRow
+              ? 'col-span-2'
+              : 'col-span-2'
+            return (
+              <div key={project.id} className={colClass}>
+                <ProjectCard project={project} index={index} />
+              </div>
+            )
+          })}
         </motion.div>
 
       </div>
