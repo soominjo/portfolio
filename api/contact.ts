@@ -4,6 +4,7 @@ import { initializeApp, getApps, cert } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { notificationEmail } from './emails/notification'
 import { confirmationEmail } from './emails/confirmation'
+import { isRateLimited, getClientIp } from './lib/rateLimit'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -21,7 +22,7 @@ if (!getApps().length) {
 const db = getFirestore()
 
 function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  return /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(email)
 }
 
 function formatTimestamp(date: Date): string {
@@ -31,6 +32,10 @@ function formatTimestamp(date: Date): string {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed' })
+  }
+
+  if (isRateLimited(`contact:${getClientIp(req)}`, 3, 10 * 60 * 1000)) {
+    return res.status(429).json({ success: false, error: 'Too many requests. Please try again later.' })
   }
 
   const { name, email, message } = req.body ?? {}

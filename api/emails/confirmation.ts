@@ -1,16 +1,13 @@
+import { escapeHtml } from './escapeHtml'
+
 interface ConfirmationData {
   senderName: string
   message: string
 }
 
 export function confirmationEmail({ senderName, message }: ConfirmationData): string {
-  const escaped = message
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\n/g, '<br>')
-
-  const firstName = senderName.split(' ')[0]
+  const escaped = escapeHtml(message).replace(/\n/g, '<br>')
+  const firstName = escapeHtml(senderName.split(' ')[0])
 
   return `<!DOCTYPE html>
 <html lang="en">

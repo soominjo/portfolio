@@ -1,3 +1,5 @@
+import { escapeHtml } from './escapeHtml'
+
 interface NotificationData {
   senderName: string
   senderEmail: string
@@ -6,15 +8,13 @@ interface NotificationData {
 }
 
 export function notificationEmail({ senderName, senderEmail, message, receivedAt }: NotificationData): string {
-  const escaped = message
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\n/g, '<br>')
+  const escaped = escapeHtml(message).replace(/\n/g, '<br>')
+  const safeName = escapeHtml(senderName)
+  const safeEmail = escapeHtml(senderEmail)
 
   const replySubject = encodeURIComponent(`Re: Your message to Genessis`)
   const replyBody = encodeURIComponent(`Hi ${senderName},\n\nThanks for reaching out! `)
-  const replyHref = `mailto:${senderEmail}?subject=${replySubject}&body=${replyBody}`
+  const replyHref = escapeHtml(`mailto:${senderEmail}?subject=${replySubject}&body=${replyBody}`)
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -106,11 +106,11 @@ export function notificationEmail({ senderName, senderEmail, message, receivedAt
                       <tr>
                         <td width="50%" style="padding-right:12px;vertical-align:top;">
                           <p style="font-family:'JetBrains Mono','Courier New',monospace;font-size:8px;color:#374151;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px 0;">FROM</p>
-                          <p style="font-family:'DM Sans',Arial,sans-serif;font-size:15px;font-weight:600;color:#e2e8f0;margin:0;">${senderName}</p>
+                          <p style="font-family:'DM Sans',Arial,sans-serif;font-size:15px;font-weight:600;color:#e2e8f0;margin:0;">${safeName}</p>
                         </td>
                         <td width="50%" style="padding-left:12px;vertical-align:top;">
                           <p style="font-family:'JetBrains Mono','Courier New',monospace;font-size:8px;color:#374151;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px 0;">EMAIL</p>
-                          <p style="font-family:'JetBrains Mono','Courier New',monospace;font-size:12px;color:#22d3ee;margin:0;word-break:break-all;">${senderEmail}</p>
+                          <p style="font-family:'JetBrains Mono','Courier New',monospace;font-size:12px;color:#22d3ee;margin:0;word-break:break-all;">${safeEmail}</p>
                         </td>
                       </tr>
                     </table>
@@ -140,7 +140,7 @@ export function notificationEmail({ senderName, senderEmail, message, receivedAt
                         <td style="border-radius:8px;background-color:#6366f1;">
                           <a href="${replyHref}"
                             style="display:inline-block;padding:13px 28px;font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#ffffff;text-decoration:none;letter-spacing:0.2px;border-radius:8px;">
-                            Reply to ${senderName} &rarr;
+                            Reply to ${safeName} &rarr;
                           </a>
                         </td>
                       </tr>
