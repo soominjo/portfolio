@@ -26,4 +26,5 @@ export const profile = {
       years: '2019 - 2021',
     },
   ] satisfies EducationEntry[],
+  certifications: ['Introduction to Cybersecurity (Cisco)', 'Endpoint Security (Cisco)'],
 }
