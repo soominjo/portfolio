@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -9,6 +10,20 @@ interface Message {
 const WELCOME: Message = {
   role: 'assistant',
   content: "Hi! I'm Gens' AI assistant. Ask me anything about his experience, skills, or projects — I'm here to help!",
+}
+
+const markdownComponents = {
+  p: ({ children }: { children?: React.ReactNode }) => <p className="mb-2 last:mb-0">{children}</p>,
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="list-disc pl-4 mb-2 last:mb-0 space-y-1">{children}</ul>
+  ),
+  ol: ({ children }: { children?: React.ReactNode }) => (
+    <ol className="list-decimal pl-4 mb-2 last:mb-0 space-y-1">{children}</ol>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => <li>{children}</li>,
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="font-semibold text-white light:text-slate-900">{children}</strong>
+  ),
 }
 
 export function Chatbot() {
@@ -80,7 +95,7 @@ export function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-slate-900 light:bg-white rounded-2xl shadow-2xl border border-slate-700 light:border-slate-200 flex flex-col overflow-hidden"
             style={{ maxHeight: '520px' }}
           >
             {/* Header */}
@@ -106,28 +121,32 @@ export function Chatbot() {
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
-                    <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center shrink-0 mt-1 mr-2">
-                      <span className="text-indigo-600 dark:text-indigo-400 text-xs font-bold">G</span>
+                    <div className="w-6 h-6 rounded-full bg-indigo-900 light:bg-indigo-100 flex items-center justify-center shrink-0 mt-1 mr-2">
+                      <span className="text-indigo-400 light:text-indigo-600 text-xs font-bold">G</span>
                     </div>
                   )}
                   <div
                     className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                       msg.role === 'user'
                         ? 'bg-indigo-600 text-white rounded-br-sm'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-sm'
+                        : 'bg-slate-800 light:bg-slate-100 text-slate-200 light:text-slate-800 rounded-bl-sm'
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === 'assistant' ? (
+                      <ReactMarkdown components={markdownComponents}>{msg.content}</ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
                   </div>
                 </div>
               ))}
 
               {isLoading && (
                 <div className="flex justify-start items-end gap-2">
-                  <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center shrink-0">
-                    <span className="text-indigo-600 dark:text-indigo-400 text-xs font-bold">G</span>
+                  <div className="w-6 h-6 rounded-full bg-indigo-900 light:bg-indigo-100 flex items-center justify-center shrink-0">
+                    <span className="text-indigo-400 light:text-indigo-600 text-xs font-bold">G</span>
                   </div>
-                  <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-bl-sm px-4 py-3">
+                  <div className="bg-slate-800 light:bg-slate-100 rounded-2xl rounded-bl-sm px-4 py-3">
                     <TypingIndicator />
                   </div>
                 </div>
@@ -136,7 +155,7 @@ export function Chatbot() {
             </div>
 
             {/* Input */}
-            <div className="p-3 border-t border-slate-200 dark:border-slate-700 flex gap-2 shrink-0">
+            <div className="p-3 border-t border-slate-700 light:border-slate-200 flex gap-2 shrink-0">
               <input
                 ref={inputRef}
                 type="text"
@@ -150,7 +169,7 @@ export function Chatbot() {
                 }}
                 placeholder="Ask me anything about Gens..."
                 maxLength={500}
-                className="flex-1 rounded-xl px-3.5 py-2.5 text-sm bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                className="flex-1 rounded-xl px-3.5 py-2.5 text-sm bg-slate-800 light:bg-slate-100 text-white light:text-slate-900 placeholder-slate-500 light:placeholder-slate-400 outline-none focus:ring-2 focus:ring-indigo-400 transition"
               />
               <button
                 onClick={sendMessage}
@@ -209,7 +228,7 @@ function TypingIndicator() {
           key={i}
           animate={{ y: [0, -5, 0] }}
           transition={{ duration: 0.55, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
-          className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500"
+          className="w-1.5 h-1.5 rounded-full bg-slate-500 light:bg-slate-400"
         />
       ))}
     </div>

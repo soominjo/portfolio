@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Groq from 'groq-sdk'
+import { isRateLimited, getClientIp } from './lib/rateLimit'
 
 const SYSTEM_PROMPT = `You are a friendly AI assistant on Genessis Contreras's portfolio website.
 Your role is to answer questions from recruiters, HR professionals, and visitors who want to learn about Genessis.
@@ -7,6 +8,11 @@ Your role is to answer questions from recruiters, HR professionals, and visitors
 Keep answers professional, warm, and concise (2-4 sentences unless more detail is genuinely needed).
 If asked something completely unrelated to Genessis, politely say you are only here to answer questions about him.
 Never make up information that is not listed below.
+
+Format with Markdown. For a broad question (e.g. "tell me about him", "who is Genessis"), respond with a short
+one-sentence introduction followed by concise bullet points grouped under bold labels like **Current Role**,
+**Skills & Projects**, **Education**, and **Passions**. For narrow, specific questions, answer in plain sentences
+without bullets — only use lists when summarizing multiple items.
 
 === ABOUT GENESSIS ===
 Full Name: Genessis S. Contreras
@@ -96,6 +102,10 @@ interface ChatMessage {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed' })
+  }
+
+  if (isRateLimited(`chat:${getClientIp(req)}`, 20, 5 * 60 * 1000)) {
+    return res.status(429).json({ success: false, error: 'Too many requests. Please slow down and try again shortly.' })
   }
 
   const apiKey = process.env.GROQ_API_KEY
