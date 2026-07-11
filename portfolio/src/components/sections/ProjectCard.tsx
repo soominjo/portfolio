@@ -41,15 +41,15 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       {/* Content */}
       <div className="flex flex-col flex-1 p-5 gap-4">
         <div>
-          <p className="font-mono-label text-xs text-cyan-400/80 uppercase tracking-widest mb-1.5">
+          <p className="font-mono-label text-xs text-cyan-400/80 light:text-[#008080] uppercase tracking-widest mb-1.5">
             {project.role}
           </p>
-          <h3 className="font-display text-lg font-bold text-white">
+          <h3 className="font-display text-lg font-bold text-white light:text-[#1a1a1a]">
             {project.title}
           </h3>
         </div>
 
-        <p className="text-sm text-slate-400 leading-relaxed flex-1">
+        <p className="text-sm text-slate-400 light:text-[#4a4a4a] leading-relaxed flex-1">
           {project.purpose}
         </p>
 
@@ -58,7 +58,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           {project.techStack.map(tech => (
             <span
               key={tech}
-              className="font-mono-label px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
+              className="font-mono-label px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 light:bg-[#e1e8f0] text-indigo-300 light:text-[#2c3e50] light:font-semibold border border-indigo-500/20 light:border-[#c7d2e0]"
             >
               {tech}
             </span>
@@ -66,13 +66,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         </div>
 
         {/* Links */}
-        <div className="flex gap-4 pt-3 border-t border-white/6">
+        <div className="flex gap-4 pt-3 border-t border-white/6 light:border-[#e0e0e0]">
           {project.liveUrl && (
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-mono-label text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+              className="flex items-center gap-1.5 font-mono-label text-xs text-cyan-400 light:text-[#0056b3] hover:text-cyan-300 light:hover:text-[#003d82] transition-colors"
             >
               <ExternalLinkIcon />
               Live Demo
@@ -83,7 +83,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-mono-label text-xs text-slate-500 hover:text-slate-300 transition-colors"
+              className="flex items-center gap-1.5 font-mono-label text-xs text-slate-500 light:text-slate-600 hover:text-slate-300 light:hover:text-slate-800 transition-colors"
             >
               <GitHubIcon />
               Source

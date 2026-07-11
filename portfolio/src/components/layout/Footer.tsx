@@ -2,7 +2,7 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-indigo-500/15 bg-[#05070f]">
+    <footer className="border-t border-indigo-500/15 bg-[#05070f] light:bg-[#f7f9fc]">
       <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="font-mono-label text-xs text-slate-600">
           &copy; {year} Genessis Contreras &mdash; Built with React, Tailwind &amp; Firebase.
@@ -13,7 +13,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="text-slate-600 hover:text-indigo-400 transition-colors"
+            className="text-slate-600 light:text-slate-500 hover:text-indigo-400 light:hover:text-indigo-600 transition-colors"
           >
             <GitHubIcon />
           </a>
@@ -22,7 +22,7 @@ export function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-slate-600 hover:text-indigo-400 transition-colors"
+            className="text-slate-600 light:text-slate-500 hover:text-indigo-400 light:hover:text-indigo-600 transition-colors"
           >
             <LinkedInIcon />
           </a>

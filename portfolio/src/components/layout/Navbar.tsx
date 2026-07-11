@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface NavbarProps {
   theme: 'dark' | 'light'
-  onToggleTheme: () => void
+  onToggleTheme: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
 const navLinks = [
   { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -16,13 +17,13 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#05070f]/85 dark:bg-[#05070f]/85 backdrop-blur-xl border-b border-indigo-500/20">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#05070f]/85 light:bg-white/85 backdrop-blur-xl border-b border-indigo-500/20">
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a
           href="#hero"
-          className="font-display text-xl font-bold text-white tracking-tight hover:text-indigo-400 transition-colors"
+          className="font-display text-xl font-bold text-white light:text-slate-900 tracking-tight hover:text-indigo-400 light:hover:text-indigo-600 transition-colors"
         >
-          GC<span className="text-indigo-400 glow-cyan">.</span>
+          GC<span className="text-indigo-400 light:text-indigo-600 glow-cyan">.</span>
         </a>
 
         {/* Desktop links */}
@@ -31,7 +32,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="font-mono-label text-xs tracking-widest uppercase text-slate-400 hover:text-cyan-400 transition-colors"
+                className="font-mono-label text-xs tracking-widest uppercase text-slate-400 light:text-slate-600 hover:text-cyan-400 light:hover:text-cyan-700 transition-colors"
               >
                 {link.label}
               </a>
@@ -43,7 +44,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
           <button
             onClick={onToggleTheme}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            className="p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-colors"
+            className="p-2 rounded-lg text-slate-400 light:text-slate-600 hover:text-cyan-400 light:hover:text-cyan-700 hover:bg-white/5 light:hover:bg-slate-900/5 transition-colors"
           >
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </button>
@@ -51,7 +52,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
           <button
             onClick={() => setMenuOpen(prev => !prev)}
             aria-label="Toggle menu"
-            className="md:hidden p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-colors"
+            className="md:hidden p-2 rounded-lg text-slate-400 light:text-slate-600 hover:text-cyan-400 light:hover:text-cyan-700 hover:bg-white/5 light:hover:bg-slate-900/5 transition-colors"
           >
             {menuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
@@ -64,7 +65,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-indigo-500/20 bg-[#05070f]/95"
+            className="md:hidden border-t border-indigo-500/20 bg-[#05070f]/95 light:bg-white/95"
           >
             <ul className="px-6 py-5 flex flex-col gap-5">
               {navLinks.map(link => (
@@ -72,7 +73,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
                   <a
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="font-mono-label text-xs tracking-widest uppercase text-slate-400 hover:text-cyan-400 transition-colors"
+                    className="font-mono-label text-xs tracking-widest uppercase text-slate-400 light:text-slate-600 hover:text-cyan-400 light:hover:text-cyan-700 transition-colors"
                   >
                     {link.label}
                   </a>

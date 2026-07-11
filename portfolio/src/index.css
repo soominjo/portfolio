@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 @layer base {
   html {
@@ -13,6 +13,11 @@
     font-family: 'DM Sans', sans-serif;
     transition: background-color 0.3s, color 0.3s;
     -webkit-font-smoothing: antialiased;
+  }
+
+  .light body {
+    background-color: #f7f9fc;
+    color: #1e293b;
   }
 }
 
@@ -39,6 +44,11 @@
   text-shadow:
     0 0 20px rgba(34, 211, 238, 0.6),
     0 0 40px rgba(34, 211, 238, 0.3);
+}
+
+.light .glow-text,
+.light .glow-cyan {
+  text-shadow: none;
 }
 
 .btn-glow {
@@ -70,6 +80,21 @@
   transform: translateY(-3px);
 }
 
+.light .card-glass {
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 10px 20px rgba(0, 0, 0, 0.03);
+}
+
+.light .card-glass:hover {
+  border-color: rgba(8, 145, 178, 0.55);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 14px 28px rgba(8, 145, 178, 0.08);
+}
+
 /* Input glow on focus */
 .input-glow:focus {
   outline: none;
@@ -77,8 +102,17 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15), 0 0 20px rgba(99, 102, 241, 0.1);
 }
 
-/* Light mode overrides */
-.light body {
-  background-color: #f8fafc;
-  color: #0f172a;
+/* Circular wipe transition (theme toggle) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
 }
