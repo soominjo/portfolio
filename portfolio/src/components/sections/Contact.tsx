@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
+import confetti from 'canvas-confetti'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -13,8 +14,28 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>
 type SubmitStatus = 'idle' | 'loading' | 'success' | 'error'
 
+const DEFAULT_ERROR_MESSAGE = 'Something went wrong. Please email me directly.'
+
+function fireConfetti(button: HTMLButtonElement) {
+  const rect = button.getBoundingClientRect()
+  confetti({
+    particleCount: 40,
+    spread: 55,
+    startVelocity: 22,
+    gravity: 1.1,
+    scalar: 0.7,
+    ticks: 150,
+    origin: {
+      x: (rect.left + rect.width / 2) / window.innerWidth,
+      y: rect.top / window.innerHeight,
+    },
+    colors: ['#6366f1', '#818cf8', '#22d3ee'],
+  })
+}
+
 export function Contact() {
   const [status, setStatus] = useState<SubmitStatus>('idle')
+  const [errorMessage, setErrorMessage] = useState(DEFAULT_ERROR_MESSAGE)
 
   const {
     register,
@@ -25,27 +46,34 @@ export function Contact() {
     resolver: zodResolver(contactSchema),
   })
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData, event?: React.BaseSyntheticEvent) => {
     setStatus('loading')
+    setErrorMessage(DEFAULT_ERROR_MESSAGE)
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      if (!res.ok) throw new Error('Server error')
+      if (!res.ok) {
+        const body: { error?: string } | null = await res.json().catch(() => null)
+        if (body?.error) setErrorMessage(body.error)
+        throw new Error('Server error')
+      }
       setStatus('success')
       reset()
+      const submitButton = event?.target?.querySelector('button[type="submit"]') as HTMLButtonElement | null
+      if (submitButton) fireConfetti(submitButton)
     } catch {
       setStatus('error')
     }
   }
 
   const inputClass =
-    'w-full input-glow px-4 py-3 rounded-lg bg-white/[0.04] border border-indigo-500/20 text-slate-200 placeholder-slate-600 text-sm transition-colors'
+    'w-full input-glow px-4 py-3 rounded-lg bg-white/[0.04] light:bg-slate-900/[0.03] border border-indigo-500/20 text-slate-200 light:text-slate-800 placeholder-slate-600 light:placeholder-slate-400 text-sm transition-colors'
 
   return (
-    <section id="contact" className="relative py-28 px-6 bg-[#070b14]">
+    <section id="contact" className="relative py-28 px-6 bg-[#070b14] light:bg-white">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-indigo-500/40 to-transparent" />
 
       <div className="max-w-6xl mx-auto">
@@ -59,10 +87,10 @@ export function Contact() {
           <p className="font-mono-label text-xs text-indigo-400 tracking-[0.25em] uppercase mb-3">
             // get.in.touch
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white light:text-slate-900 mb-4">
             Let&apos;s Work Together
           </h2>
-          <p className="text-slate-500 max-w-md text-sm leading-relaxed">
+          <p className="text-slate-500 light:text-slate-600 max-w-md text-sm leading-relaxed">
             Have a role in mind or just want to connect? Drop me a message and I&apos;ll get
             back to you within 24 hours.
           </p>
@@ -104,14 +132,14 @@ export function Contact() {
                 rel="noopener noreferrer"
                 className="card-glass flex items-center gap-4 p-4 rounded-xl group"
               >
-                <span className="text-indigo-400 group-hover:text-cyan-400 transition-colors shrink-0">
+                <span className="text-indigo-400 light:text-indigo-600 group-hover:text-cyan-400 light:group-hover:text-cyan-700 transition-colors shrink-0">
                   {item.icon}
                 </span>
                 <div>
-                  <p className="font-mono-label text-[10px] text-slate-600 uppercase tracking-widest mb-0.5">
+                  <p className="font-mono-label text-[10px] text-slate-600 light:text-slate-500 uppercase tracking-widest mb-0.5">
                     {item.label}
                   </p>
-                  <p className="text-sm text-slate-300 group-hover:text-cyan-400 transition-colors">
+                  <p className="text-sm text-slate-300 light:text-slate-700 group-hover:text-cyan-400 light:group-hover:text-cyan-700 transition-colors">
                     {item.value}
                   </p>
                 </div>
@@ -130,23 +158,23 @@ export function Contact() {
             className="flex flex-col gap-4"
           >
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="name" className="font-mono-label text-xs text-slate-500 uppercase tracking-widest">
+              <label htmlFor="name" className="font-mono-label text-xs text-slate-500 light:text-slate-600 uppercase tracking-widest">
                 Name
               </label>
               <input id="name" type="text" placeholder="Jane Smith" {...register('name')} className={inputClass} />
-              {errors.name && <p className="font-mono-label text-xs text-red-400">{errors.name.message}</p>}
+              {errors.name && <p className="font-mono-label text-xs text-red-400 light:text-red-600">{errors.name.message}</p>}
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="email" className="font-mono-label text-xs text-slate-500 uppercase tracking-widest">
+              <label htmlFor="email" className="font-mono-label text-xs text-slate-500 light:text-slate-600 uppercase tracking-widest">
                 Email
               </label>
               <input id="email" type="email" placeholder="jane@company.com" {...register('email')} className={inputClass} />
-              {errors.email && <p className="font-mono-label text-xs text-red-400">{errors.email.message}</p>}
+              {errors.email && <p className="font-mono-label text-xs text-red-400 light:text-red-600">{errors.email.message}</p>}
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="message" className="font-mono-label text-xs text-slate-500 uppercase tracking-widest">
+              <label htmlFor="message" className="font-mono-label text-xs text-slate-500 light:text-slate-600 uppercase tracking-widest">
                 Message
               </label>
               <textarea
@@ -156,7 +184,7 @@ export function Contact() {
                 {...register('message')}
                 className={`${inputClass} resize-none`}
               />
-              {errors.message && <p className="font-mono-label text-xs text-red-400">{errors.message.message}</p>}
+              {errors.message && <p className="font-mono-label text-xs text-red-400 light:text-red-600">{errors.message.message}</p>}
             </div>
 
             <button
@@ -171,18 +199,18 @@ export function Contact() {
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="font-mono-label text-xs text-center text-green-400"
+                className="font-mono-label text-xs text-center text-green-400 light:text-green-600"
               >
-                ✓ Message sent! I&apos;ll get back to you soon.
+                ✓ Got your message! I&apos;ll personally reply to your email soon — keep an eye on your inbox.
               </motion.p>
             )}
             {status === 'error' && (
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="font-mono-label text-xs text-center text-red-400"
+                className="font-mono-label text-xs text-center text-red-400 light:text-red-600"
               >
-                ✗ Something went wrong. Please email me directly.
+                ✗ {errorMessage}
               </motion.p>
             )}
           </motion.form>
