@@ -38,7 +38,7 @@ export function Hero() {
           className="inline-flex items-center gap-2.5 mb-8 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5"
         >
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="font-mono-label text-xs text-green-400 tracking-widest uppercase">
+          <span className="font-mono-label text-xs text-green-400 light:text-green-600 tracking-widest uppercase">
             Available for opportunities
           </span>
         </motion.div>
@@ -49,7 +49,7 @@ export function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="font-display text-6xl sm:text-7xl md:text-8xl font-bold text-white leading-none tracking-tight mb-2"
+          className="font-display text-6xl sm:text-7xl md:text-8xl font-bold text-white light:text-slate-900 leading-none tracking-tight mb-2"
         >
           Genessis
         </motion.h1>
@@ -70,23 +70,29 @@ export function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="font-mono-label text-xs sm:text-sm text-slate-500 tracking-[0.25em] uppercase mb-6"
+          className="font-mono-label text-base sm:text-lg text-white light:text-slate-900 font-semibold tracking-[0.25em] uppercase mb-6"
         >
-          Full-Stack Developer &nbsp;·&nbsp; QA Engineer &nbsp;·&nbsp; AI Builder
+          Software Engineer
         </motion.p>
 
         {/* Description */}
-        <motion.p
+        <motion.div
           custom={0.4}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-slate-400 light:text-slate-600 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed space-y-3"
         >
-          I build AI-powered, full-stack web applications — combining clean frontend
-          engineering with RAG pipelines, LLM integrations, and a rigorous QA mindset
-          to ship products that work reliably from day one.
-        </motion.p>
+          <p>
+            I&apos;m a full-stack engineer. I build modern web &amp; mobile apps, and
+            these days I&apos;m focused on generative AI — RAG pipelines, LLM
+            integrations, the works.
+          </p>
+          <p>
+            I bring QA rigor and a consultant&apos;s mindset to everything I ship —
+            turning rough ideas into things people actually use.
+          </p>
+        </motion.div>
 
         {/* CTAs */}
         <motion.div
@@ -104,14 +110,15 @@ export function Hero() {
           </a>
           <a
             href="#contact"
-            className="px-7 py-3 rounded-lg border border-indigo-500/40 text-slate-300 hover:text-white hover:border-cyan-400/60 font-semibold text-sm transition-all duration-200"
+            className="px-7 py-3 rounded-lg border border-indigo-500/40 text-slate-300 light:text-slate-700 hover:text-white light:hover:text-slate-900 hover:border-cyan-400/60 font-semibold text-sm transition-all duration-200"
           >
             Get In Touch
           </a>
           <a
-            href="/resume.pdf"
-            download
-            className="px-7 py-3 rounded-lg border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 font-semibold text-sm transition-all duration-200"
+            href="/resume"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-7 py-3 rounded-lg border border-slate-700 light:border-slate-300 text-slate-400 light:text-slate-600 hover:text-white light:hover:text-slate-900 hover:border-slate-500 font-semibold text-sm transition-all duration-200"
           >
             Resume ↓
           </a>
@@ -130,7 +137,7 @@ export function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="text-slate-600 hover:text-indigo-400 transition-colors"
+            className="text-slate-600 light:text-slate-500 hover:text-indigo-400 light:hover:text-indigo-600 transition-colors"
           >
             <GitHubIcon />
           </a>
@@ -139,7 +146,7 @@ export function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-slate-600 hover:text-indigo-400 transition-colors"
+            className="text-slate-600 light:text-slate-500 hover:text-indigo-400 light:hover:text-indigo-600 transition-colors"
           >
             <LinkedInIcon />
           </a>

@@ -6,9 +6,14 @@ import { About } from './components/sections/About'
 import { Projects } from './components/sections/Projects'
 import { Contact } from './components/sections/Contact'
 import { Chatbot } from './components/Chatbot'
+import { Resume } from './components/Resume'
 
 function App() {
   const { theme, toggleTheme } = useTheme()
+
+  if (window.location.pathname === '/resume') {
+    return <Resume />
+  }
 
   return (
     <div className="relative">
