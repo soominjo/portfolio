@@ -1,5 +1,5 @@
-import { experience } from '../data/experience'
-import type { Experience as ExperienceEntry } from '../types/experience'
+import { experience } from '../../../shared/data/experience'
+import type { Experience as ExperienceEntry } from '../../../shared/types/experience'
 
 interface UseExperienceResult {
   experience: ExperienceEntry[]

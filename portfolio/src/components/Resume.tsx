@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react'
-import { profile } from '../data/profile'
-import { skillGroups } from '../data/skills'
+import { profile } from '../../../shared/data/profile'
+import { skillGroups } from '../../../shared/data/skills'
 import { useExperience } from '../hooks/useExperience'
 import { useProjects } from '../hooks/useProjects'
 

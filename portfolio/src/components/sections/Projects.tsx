@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useProjects } from '../../hooks/useProjects'
 import { ProjectCard } from './ProjectCard'
-import type { ProjectCategory } from '../../types/project'
+import type { ProjectCategory } from '../../../../shared/types/project'
 
 const tabs: { id: ProjectCategory; label: string }[] = [
   { id: 'engineering', label: 'Engineering' },

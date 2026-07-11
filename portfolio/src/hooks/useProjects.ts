@@ -1,5 +1,5 @@
-import { featuredProjects } from '../data/projects'
-import type { Project } from '../types/project'
+import { featuredProjects } from '../../../shared/data/projects'
+import type { Project } from '../../../shared/types/project'
 
 interface UseProjectsResult {
   projects: Project[]

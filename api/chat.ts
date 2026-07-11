@@ -1,11 +1,11 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import Groq from 'groq-sdk'
 import { isRateLimited, getClientIp } from './lib/rateLimit'
-import { profile } from '../portfolio/src/data/profile'
-import { experience } from '../portfolio/src/data/experience'
-import { skillGroups } from '../portfolio/src/data/skills'
-import { featuredProjects } from '../portfolio/src/data/projects'
-import type { Project } from '../portfolio/src/types/project'
+import { profile } from '../shared/data/profile'
+import { experience } from '../shared/data/experience'
+import { skillGroups } from '../shared/data/skills'
+import { featuredProjects } from '../shared/data/projects'
+import type { Project } from '../shared/types/project'
 
 const ASSISTANT_INSTRUCTIONS = `You are a friendly AI assistant on Genessis Contreras's portfolio website.
 Your role is to answer questions from recruiters, HR professionals, and visitors who want to learn about Genessis.

@@ -1,6 +1,6 @@
 import { motion, type Variants } from 'framer-motion'
 import { useExperience } from '../../hooks/useExperience'
-import { skillGroups } from '../../data/skills'
+import { skillGroups } from '../../../../shared/data/skills'
 
 const facts = [
   { label: 'Role', value: 'Junior Software Engineer @ Hytel Pte Ltd.' },
