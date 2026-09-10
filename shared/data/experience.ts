@@ -3,14 +3,14 @@ import type { Experience } from '../types/experience'
 export const experience: Experience[] = [
   {
     id: 'hytel',
-    year: 'March 2026 to Current',
+    year: 'March 2026 - September 2026',
     role: 'Junior Software Engineer',
     company: 'Hytel Pte Ltd.',
-    current: true,
+    current: false,
     highlights: [
-      'Full-stack, mobile-first product — building both frontend and backend for a mobile-first platform using React, Node, and Firestore/Cloud SQL on the web, with Flutter and Dart on mobile.',
-      'RAG systems & AI integrations — engineered Retrieval-Augmented Generation pipelines by chunking and vectorizing LTO regulatory documents to power a traffic law AI assistant, and built an AI-powered "fine ticket decoder" that analyzes uploaded citations via computer vision.',
-      'Started in QA, grew into full-stack AI development — began on cross-functional QA across enterprise projects, tracking bugs through proprietary ticketing software and hardening CI/CD pipelines, before moving into full-stack engineering.',
+      'Collaborated cross-functionally — partnered with product managers, designers, and backend developers to scope, build, and ship frontend and backend features for a mobile-first platform, delivering React web interfaces and Flutter/Dart mobile screens backed by Node and Firestore/Cloud SQL.',
+      'Engineered RAG systems & AI integrations — built Retrieval-Augmented Generation pipelines by chunking and vectorizing LTO regulatory documents to power a traffic-law AI assistant, and shipped an AI-powered "fine ticket decoder" that analyzes uploaded citations via computer vision.',
+      'Drove quality across enterprise projects — started in cross-functional QA, tracking and triaging bugs through proprietary ticketing software and hardening CI/CD pipelines, before transitioning into full-stack engineering.',
     ],
     techStack: ['React', 'Node.js', 'Firebase / Firestore', 'MySQL / Cloud SQL', 'Flutter', 'Dart', 'RAG Pipelines', 'LLM Integration', 'CI/CD'],
   },

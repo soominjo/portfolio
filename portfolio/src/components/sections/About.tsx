@@ -3,11 +3,11 @@ import { useExperience } from '../../hooks/useExperience'
 import { skillGroups } from '../../../../shared/data/skills'
 
 const facts = [
-  { label: 'Role', value: 'Junior Software Engineer @ Hytel Pte Ltd.' },
+  { label: 'Role', value: 'Software Engineer · Frontend-leaning Full-Stack' },
   { label: 'Focus', value: 'Full-Stack · AI/RAG Systems · Web & Mobile' },
   { label: 'Location', value: 'Bacoor City, Cavite, Philippines' },
   { label: 'Email', value: 'genesis060102@gmail.com' },
-  { label: 'Status', value: 'Employed · Open to opportunities' },
+  { label: 'Status', value: 'Open to opportunities' },
 ]
 
 const fadeUp: Variants = {
@@ -52,7 +52,7 @@ export function About() {
             <p className="text-slate-300 light:text-slate-700 leading-relaxed text-lg">
               I&apos;m a Software Engineer based in Bacoor City, Cavite, Philippines, and a
               graduated Information Technology from Cavite State
-              University – Bacoor City Campus. Right now, I build full-stack, AI-powered
+              University – Bacoor City Campus. Most recently, I built full-stack, AI-powered
               products at Hytel Pte Ltd.
             </p>
             <p className="text-slate-400 light:text-slate-600 leading-relaxed">
@@ -63,7 +63,8 @@ export function About() {
               bent again: I started in QA, tracking bugs and hardening CI/CD pipelines
               across enterprise projects, before earning my way into full-stack
               engineering on a mobile-first product with a deep focus on AI — RAG
-              pipelines, LLM integrations, and more. I recently rounded that out with AI
+              pipelines, LLM integrations, and more, collaborating with product managers
+              and developers to ship features end to end. I rounded that out with AI
               enablement training, sharpening how I evaluate and apply AI in production.
             </p>
             <p className="text-slate-500 light:text-slate-600 leading-relaxed">
