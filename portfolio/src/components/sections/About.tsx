@@ -1,6 +1,6 @@
 import { motion, type Variants } from 'framer-motion'
 import { useExperience } from '../../hooks/useExperience'
-import { skillGroups } from '../../../../shared/data/skills'
+import { TechStack } from '../skills/TechStack'
 
 const facts = [
   { label: 'Role', value: 'Software Engineer · Frontend-leaning Full-Stack' },
@@ -19,7 +19,7 @@ export function About() {
   const { experience } = useExperience()
 
   return (
-    <section id="about" className="relative py-28 px-6 bg-[#070b14] light:bg-white">
+    <section id="about" className="relative py-28 px-6 clear-side-nav bg-[#070b14] light:bg-white">
       {/* Subtle top border glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-indigo-500/40 to-transparent" />
 
@@ -106,7 +106,7 @@ export function About() {
         </div>
 
         {/* Experience */}
-        <div id="experience" className="max-w-4xl mb-24">
+        <div id="experience" className="max-w-4xl mb-24 scroll-mt-20 desk:scroll-mt-0">
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -201,52 +201,7 @@ export function About() {
         </div>
 
         {/* Skills */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          className="mb-10"
-        >
-          <p className="font-mono-label text-xs text-indigo-400 tracking-[0.25em] uppercase mb-3">
-            // tech.stack
-          </p>
-          <h3 className="font-display text-3xl sm:text-4xl font-bold text-white light:text-slate-900">
-            What I Work With
-          </h3>
-        </motion.div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {skillGroups.map((group, i) => (
-            <motion.div
-              key={group.category}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ delay: i * 0.08 }}
-              className="card-glass rounded-xl p-5"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-indigo-400 light:text-indigo-600 text-lg">{group.icon}</span>
-                <h4 className="font-mono-label text-xs text-indigo-400 light:text-indigo-600 tracking-widest uppercase">
-                  {group.category}
-                </h4>
-              </div>
-              <ul className="space-y-2">
-                {group.skills.map(skill => (
-                  <li
-                    key={skill}
-                    className="flex items-center gap-2 text-sm text-slate-400 light:text-slate-600"
-                  >
-                    <span className="w-1 h-1 rounded-full bg-cyan-500/60 shrink-0" />
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
+        <TechStack />
       </div>
 
       {/* Subtle bottom border glow */}

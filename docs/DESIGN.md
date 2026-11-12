@@ -167,6 +167,27 @@ Spacing is copied from Hamish Williams' portfolio (MIT).
 </span>
 ```
 
+### Tech Stack (`src/components/skills/`)
+The "What I Work With" block in About. It has one row per category in `shared/data/skills.ts`.
+- **Layout:** rows are split by hairlines (`border-white/[0.07]`, light theme `slate-200`). From `md`, the left third of each row holds the category glyph, name and skill count, and the right two thirds hold the skills. On phones the name and count share a line above the skills.
+- **Logos:** each skill with a logo gets a 44px tile (`size-11 rounded-xl`) holding a 20px Simple Icons mark. The marks come from the `simple-icons` package (CC0), looked up by name with `getTechIcon()` in `src/lib/techIcons.ts`. Skills with no mark come after the logos as `font-mono-label text-xs` pills. Today those are Playwright, Zustand, Genkit, Google Stitch, and concepts such as "RAG Pipelines". Keep one tool per entry in the data, since one tile can show only one logo.
+- **Brand colour:** each logo takes its brand hex through `readableOn()` (`src/lib/brandColor.ts`), so it reads at 3:1 or better on the tile in each theme:
+  - Dark brand colours lighten on dark tiles, and pale ones deepen on light tiles.
+  - Black and grey marks (Next.js, Vercel, GitHub) take the text colour instead.
+  - The two results travel as `--mark-dark` and `--mark-light`, and `--mark` points at the current theme's.
+- **Interaction:** hovering a skill with a mouse, or tapping it on touch or pen, makes it active:
+  - The tile lifts, and its border, fill and glow tint to `--mark`.
+  - A tooltip names the skill. It uses decoder text on a fast spring (`spring={{ stiffness: 600, damping: 50 }}`).
+  - The rest of that row dims to 40%.
+  - A 90 ms grace period stops the row flashing while the pointer crosses the gaps between tiles. Escape, or a tap outside the skills, clears it.
+  - The tooltip slides sideways to stay 8px inside the screen, while its pointer stays on the logo.
+- **Logos / Text toggle:** a segmented control of `aria-pressed` buttons with a sliding `layoutId` thumb. Text view shows every skill as a pill, with a dot in its logo colour (or the cyan accent when it has no logo), and replays the staggered entrance.
+- **Motion:** rows fade up on scroll using the core easing, and skills pop in on a spring 35 ms apart. The block sits inside `MotionConfig reducedMotion="user"`, so reduced motion keeps the fades, drops the movement, and shows tooltip names without the scramble.
+- **Accessibility:**
+  - Each category is an `h4` that labels its `ul`. The `ul` carries `role="list"`, because Safari drops list semantics under `list-style: none`.
+  - Every logo tile carries its name in `sr-only` text, so the tooltip is `aria-hidden`.
+  - Keyboard users can't hover, so the hint points them to the Text view.
+
 ### Gradient Blobs (decorative)
 ```tsx
 // Primary blob — indigo
