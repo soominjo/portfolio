@@ -116,14 +116,22 @@ Dark, technical, cyberpunk-adjacent. The aesthetic is precision-engineered: deep
 
 ## Component Patterns
 
-### Navbar
-- Fixed top, `z-50`, `backdrop-blur-xl`
-- Height: `h-16`
-- Max width: `max-w-6xl mx-auto px-6`
-- Background: `bg-[#05070f]/85`
-- Bottom border: `border-b border-indigo-500/20`
-- Logo: `font-display text-xl font-bold`, accent dot in `glow-cyan`
-- Nav links: `font-mono-label text-xs tracking-widest uppercase text-slate-400 hover:text-cyan-400`
+### Navbar (floating side nav)
+Spacing is copied from Hamish Williams' portfolio (MIT).
+- **Desktop (`desk`, meaning at least 48rem wide and 43rem tall):** a fixed 48px column (`w-12`), inset by the outer margin on top, left and bottom: 48px, or 64px above 1680px wide. It has no background and no border, so it floats over the page. The side nav needs about 43rem of height, so shorter screens get the phone menu, as on hamishw.com.
+  - **Logo:** `GC.` in `font-display text-2xl font-bold`, padded 8px with 24px below (`p-2 pb-6`).
+  - **Links:** directly under the logo, set vertically and reading bottom to top (`[writing-mode:vertical-lr] rotate-180`). They use DM Sans at 16px medium in normal case (`text-base font-medium`), with 16px padding each, in `text-slate-300/80` that turns white on hover or when current.
+  - **Active bar:** a 4px cyan bar (`light:bg-cyan-600` for contrast on the light page) runs through the hovered, keyboard-focused or current link, inset 8px from both ends. It uses physical `top-2 bottom-2`, because Tailwind's `inset-y` is logical and runs sideways in vertical text, and it is centred with `left-1/2 -translate-x-1/2`.
+  - **Current link:** follows the section crossing the middle of the viewport (`useActiveSection`, `aria-current="location"`), not the last click. Nothing is marked while the hero is in view.
+  - **Bottom:** GitHub, LinkedIn and Resume, in 48px boxes with 8px padding and 20px icons.
+- **Theme toggle:** fixed in the top-right corner, inset by the outer margin minus 6px (42px, or 58px above 1680px wide), in a 56px box. Its 38px icon morphs from a sun (light) to a moon (dark); see `.theme-icon__*` in `index.css`. It sits on a soft see-through disc (`bg-[#05070f]/55`, `light:bg-white/65`, `backdrop-blur-md`) so it stays readable when it floats over page content while scrolling.
+- **Section clearance:** sections and the footer carry `.clear-side-nav` (8rem left padding under the same condition as `desk`), so content never sits under the floating nav.
+- **Phones and short screens:** a fixed top bar (`h-16`) holds the logo, theme toggle and menu button. The menu slides down beneath it with large `font-display` links and the icon row.
+  - It scrolls if it doesn't fit (`overflow-y-auto justify-center-safe`).
+  - While it's open, the rest of the page is `inert` and doesn't scroll.
+  - Escape closes it and returns focus to the menu button.
+- **Focus:** every nav control shows a 2px cyan focus ring (`FOCUS_RING` in `navConfig.ts`).
+- **Logo name:** the logo's accessible name starts with its visible "GC", so voice-control users can say what they see.
 
 ### Cards (`.card-glass`)
 - `rounded-xl overflow-hidden`
@@ -221,6 +229,7 @@ exit={{ opacity: 0, height: 0 }}
 - Grid: 3-column cards (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`)
 - Scroll behavior: `scroll-smooth` on `html`
 - `min-h-screen` for hero section
+- Don't combine `desk:` and `lg:` on the same property. Tailwind emits custom variants after the breakpoint variants, so `desk:` always wins.
 
 ---
 

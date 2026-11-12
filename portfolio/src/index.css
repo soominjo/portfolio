@@ -2,6 +2,11 @@
 
 @custom-variant light (&:is(.light *));
 
+/* "desk": wide AND tall enough for the floating side nav, which needs about
+   43rem of height. Shorter screens (landscape phones, zoomed or 720p laptops)
+   get the phone menu instead, as on hamishw.com. */
+@custom-variant desk (@media (min-width: 48rem) and (min-height: 43rem));
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -93,6 +98,61 @@
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.06),
     0 14px 28px rgba(8, 145, 178, 0.08);
+}
+
+/* Keeps section content clear of the floating side nav (same condition as `desk`) */
+@media (min-width: 48rem) and (min-height: 43rem) {
+  .clear-side-nav {
+    padding-left: 8rem;
+  }
+}
+
+/* Theme toggle icon: sun in the light theme, moon in the dark.
+   Adapted from Hamish Williams' portfolio (MIT). */
+.theme-icon__circle {
+  transform-origin: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.theme-icon__mask {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.theme-icon__rays {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 3;
+  stroke-dasharray: 7 7;
+  stroke-dashoffset: 7;
+  opacity: 0;
+  transition:
+    stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .theme-icon__circle {
+  transform: scale(0.6);
+  transition-delay: 0s;
+}
+
+.light .theme-icon__mask {
+  transform: translate(100%, -100%);
+  transition-delay: 0s;
+}
+
+.light .theme-icon__rays {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-icon__circle,
+  .theme-icon__mask,
+  .theme-icon__rays {
+    transition: none;
+  }
 }
 
 /* Input glow on focus */

@@ -2,7 +2,7 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-indigo-500/15 bg-[#05070f] light:bg-[#f7f9fc]">
+    <footer className="clear-side-nav border-t border-indigo-500/15 bg-[#05070f] light:bg-[#f7f9fc]">
       <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="font-mono-label text-xs text-slate-600">
           &copy; {year} Genessis Contreras &mdash; Built with React, Tailwind &amp; Firebase.
