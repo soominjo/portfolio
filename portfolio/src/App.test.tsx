@@ -26,4 +26,9 @@ describe('App', () => {
     const pageOrder = Array.from(document.querySelectorAll(navOrder.join(', ')), (target) => `#${target.id}`)
     expect(navOrder).toEqual(pageOrder)
   })
+
+  it('flies the rocket cursor on the portfolio page', () => {
+    render(<App />)
+    expect(document.documentElement).toHaveClass('rocket-cursor')
+  })
 })

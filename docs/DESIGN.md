@@ -227,6 +227,23 @@ The AI chat is a living orb in the bottom-right corner that opens a HUD-style te
 - **Focus:** the input gets focus 150ms after opening, unless the chat is already closing. Escape and [×] close it and return focus to the orb.
 - **Reduced motion:** a still orb, a fade instead of the swing, no scan band or caret blink, and replies appear at once.
 
+### Rocket Cursor (`src/components/cursor/`)
+The site cursor is a small rocket pointing up-left. Its nose is the click point.
+- **Cursor image:** a real CSS cursor, not a drawn element, so it never lags and still shows over the project dialog in the top layer. The rules sit at the end of `index.css` and apply once `RocketCursor` puts `.rocket-cursor` on `<html>`. The portfolio page has it and `/resume` doesn't.
+  - The art is 32px (`assets/cursors/rocket.svg`), shipped as 1x and 2x PNGs through `image-set()` with a plain `url()` fallback. The nose (6, 6) is the hotspot. Cursors stay at 32px or below, because browsers drop larger ones near their own UI.
+  - Links, buttons, labels and `.cursor-pointer` show `rocket-lit`, the same rocket with a cyan flame. Text fields keep the I-beam, and disabled controls keep their own cursor.
+  - It applies to mouse and trackpad only (`(hover: hover) and (pointer: fine)`). Touch is untouched, and Windows high-contrast mode (`forced-colors: active`) keeps the system cursors.
+- **Exhaust:** a click-through, full-window canvas (`z-100`, `aria-hidden`) draws puffs from the nozzle, 16px right and below the nose.
+  - Puffs cool from white-hot through cyan to indigo and fade within about half a second. On the light page they are deeper cyan and indigo with normal blending, since additive glow would vanish.
+  - The engine burns denser over links and buttons, and a click fires a boost.
+  - There's no exhaust over text fields, over the page scrollbars, or inside the open project dialog, which sits above the canvas.
+  - The canvas is sized to its own box, so a classic scrollbar doesn't stretch it.
+  - It's hidden and asks for no frames while there are no puffs.
+  - The lit rocket image is fetched up front, so the first hover over a link doesn't flash the system hand.
+- **Reduced motion:** the rocket stays but there is no exhaust.
+- **Keeping CSS and code in step:** `cursorRules.ts` mirrors the selectors and media query from `index.css`, and `cursorRules.test.ts` fails if they drift.
+- **Editing the art:** re-export both PNGs from the SVG after editing it. Vite keeps the PNGs out of the stylesheet (`assetsInlineLimit` in `vite.config.ts`), so they never block first paint.
+
 ### Gradient Blobs (decorative)
 ```tsx
 // Primary blob — indigo
