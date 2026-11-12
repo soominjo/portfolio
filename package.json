@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "cd portfolio && npm run dev",
     "build": "cd portfolio && npm run build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "seed": "tsx --env-file=.env scripts/seed-projects.ts"
   },
   "dependencies": {
