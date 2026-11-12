@@ -10,24 +10,29 @@ function nameParts(): HTMLElement[] {
   )
 }
 
-const sphereModule = vi.hoisted(() => ({ fail: false }))
+const galaxyModule = vi.hoisted(() => ({ fail: false }))
 
-// The sphere has its own tests and needs WebGL; here the hero only places it.
-vi.mock('../three/DisplacementSphere', () => ({
+// The galaxy has its own tests and needs WebGL; here the hero only places it.
+vi.mock('../backgrounds/react-bits/Galaxy', () => ({
   default: () => {
-    if (sphereModule.fail) throw new Error('sphere chunk failed to load')
-    return null
+    if (galaxyModule.fail) throw new Error('galaxy chunk failed to load')
+    return <div data-testid="galaxy" />
   },
 }))
 
 describe('Hero', () => {
   afterEach(() => {
-    sphereModule.fail = false
+    galaxyModule.fail = false
     vi.restoreAllMocks()
   })
 
-  it('keeps the page when the sphere fails to load', async () => {
-    sphereModule.fail = true
+  it('shows the galaxy behind the name by default', async () => {
+    render(<Hero theme="dark" />)
+    expect(await screen.findByTestId('galaxy')).toBeInTheDocument()
+  })
+
+  it('keeps the page when the galaxy fails to load', async () => {
+    galaxyModule.fail = true
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     render(<Hero theme="dark" />)
     await act(async () => {
@@ -70,6 +75,10 @@ describe('Hero', () => {
       await new Promise((resolve) => setTimeout(resolve, 150))
     })
     expect(nameParts()[0].style.transform).not.toContain('translateY')
-    expect(screen.getByTestId('scroll-indicator-dot').style.transform).not.toContain('translateY')
+  })
+
+  it('has no scroll-down hint', () => {
+    render(<Hero theme="dark" />)
+    expect(screen.queryByTestId('scroll-indicator-dot')).not.toBeInTheDocument()
   })
 })

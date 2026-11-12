@@ -8,9 +8,9 @@ import {
 } from './backgroundLab'
 
 describe('BACKGROUND_OPTIONS', () => {
-  it('starts with the sphere, which is the default', () => {
-    expect(BACKGROUND_OPTIONS[0].id).toBe('sphere')
-    expect(DEFAULT_BACKGROUND).toBe('sphere')
+  it('starts with the galaxy, which is the default', () => {
+    expect(BACKGROUND_OPTIONS[0].id).toBe('galaxy')
+    expect(DEFAULT_BACKGROUND).toBe('galaxy')
   })
 
   it('has unique ids', () => {
@@ -21,25 +21,25 @@ describe('BACKGROUND_OPTIONS', () => {
 
 describe('parseBackgroundId', () => {
   it('reads a known background from the query string', () => {
-    expect(parseBackgroundId('?bg=galaxy')).toBe('galaxy')
+    expect(parseBackgroundId('?bg=sphere')).toBe('sphere')
     expect(parseBackgroundId('?utm=x&bg=grid-scan')).toBe('grid-scan')
   })
 
-  it('falls back to the sphere when the param is missing or unknown', () => {
-    expect(parseBackgroundId('')).toBe('sphere')
-    expect(parseBackgroundId('?bg=nope')).toBe('sphere')
+  it('falls back to the galaxy when the param is missing or unknown', () => {
+    expect(parseBackgroundId('')).toBe('galaxy')
+    expect(parseBackgroundId('?bg=nope')).toBe('galaxy')
   })
 })
 
 describe('withBackgroundParam', () => {
   it('sets the background and keeps other params', () => {
-    expect(withBackgroundParam('?utm=x', 'galaxy')).toBe('?utm=x&bg=galaxy')
+    expect(withBackgroundParam('?utm=x', 'sphere')).toBe('?utm=x&bg=sphere')
     expect(withBackgroundParam('?bg=orb', 'particles')).toBe('?bg=particles')
   })
 
   it('drops the param for the default background', () => {
-    expect(withBackgroundParam('?bg=galaxy&utm=x', 'sphere')).toBe('?utm=x')
-    expect(withBackgroundParam('?bg=galaxy', 'sphere')).toBe('')
+    expect(withBackgroundParam('?bg=sphere&utm=x', 'galaxy')).toBe('?utm=x')
+    expect(withBackgroundParam('?bg=sphere', 'galaxy')).toBe('')
   })
 })
 

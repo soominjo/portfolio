@@ -1,13 +1,14 @@
 // Background lab: compare WebGL backgrounds in the hero before picking one.
 // It is on in development and in builds made with VITE_BG_LAB=1 (a Vercel
-// preview); a normal production build always shows the displacement sphere.
+// preview); a normal production build always shows the galaxy.
 
 export const BACKGROUND_PARAM = 'bg'
 
+// The first option is the default.
 export const BACKGROUND_OPTIONS = [
+  { id: 'galaxy', label: 'Galaxy' },
   { id: 'sphere', label: 'Sphere' },
   { id: 'orb', label: 'Orb' },
-  { id: 'galaxy', label: 'Galaxy' },
   { id: 'particles', label: 'Particles' },
   { id: 'topography', label: 'Topography' },
   { id: 'grid-scan', label: 'Grid Scan' },
@@ -15,7 +16,7 @@ export const BACKGROUND_OPTIONS = [
 
 export type BackgroundId = (typeof BACKGROUND_OPTIONS)[number]['id']
 
-export const DEFAULT_BACKGROUND: BackgroundId = 'sphere'
+export const DEFAULT_BACKGROUND: BackgroundId = 'galaxy'
 
 export interface LabEnv {
   DEV: boolean
@@ -26,7 +27,7 @@ export function isBackgroundId(value: string | null): value is BackgroundId {
   return BACKGROUND_OPTIONS.some((option) => option.id === value)
 }
 
-/** The background named by `?bg=`, or the sphere when it is missing or unknown. */
+/** The background named by `?bg=`, or the default when it is missing or unknown. */
 export function parseBackgroundId(search: string): BackgroundId {
   const value = new URLSearchParams(search).get(BACKGROUND_PARAM)
   return isBackgroundId(value) ? value : DEFAULT_BACKGROUND

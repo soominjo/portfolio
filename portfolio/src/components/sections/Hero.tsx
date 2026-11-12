@@ -66,10 +66,10 @@ export function Hero({ theme }: HeroProps) {
         }}
       />
 
-      {/* WebGL background: the sphere, or a lab candidate in dev and preview builds */}
+      {/* WebGL background: the galaxy, or a lab candidate in dev and preview builds */}
       <HeroBackground theme={theme} />
 
-      {/* Bottom fade: melts the sphere into the page colour */}
+      {/* Bottom fade: melts the galaxy into the page colour */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#05070f] to-transparent light:from-[#f7f9fc]" />
 
       {/* Name + rotating role. Vertically centred and nudged up (8% of the
@@ -108,29 +108,6 @@ export function Hero({ theme }: HeroProps) {
             <RotatingWords words={ROLES} />
           </motion.p>
         </div>
-      </div>
-
-      {/* Scroll indicator (desktop): bottom of the hero, lined up with the text column */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-8 hidden px-6 desk:block desk:px-32">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className={TEXT_COLUMN}
-        >
-          <div className="w-5 h-9 rounded-full border border-indigo-500/40 flex items-start justify-center p-1.5">
-            <motion.div
-              data-testid="scroll-indicator-dot"
-              animate={reduceMotion ? undefined : { y: [0, 10, 0] }}
-              transition={{
-                duration: 1.6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="w-1 h-1.5 rounded-full bg-indigo-400"
-            />
-          </div>
-        </motion.div>
       </div>
     </section>
   );
