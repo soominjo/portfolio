@@ -21,8 +21,8 @@ function App() {
 
       <main>
         <Hero theme={theme} />
-        <About />
         <Projects />
+        <About />
         <Contact />
       </main>
 

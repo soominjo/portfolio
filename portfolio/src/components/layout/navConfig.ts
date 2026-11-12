@@ -4,9 +4,9 @@ export interface NavLink {
 }
 
 export const NAV_LINKS: readonly NavLink[] = [
+  { label: 'Projects', href: '#projects' },
   { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
   { label: 'Contact', href: '#contact' },
 ]
 
