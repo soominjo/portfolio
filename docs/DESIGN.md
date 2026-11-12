@@ -211,6 +211,22 @@ The Projects section is a pinned scroll through every project, engineering first
 - **Reduced motion:** no intro, no lean, and instant screen and finish changes; jumps skip smooth scrolling. The stage still pins.
 - **Screenshots:** WebP files in `public/projects/`, with desktop shots 1440px wide. A 16:10 capture (for example 1440×900) fills the laptop screen without any crop.
 
+### Chatbot (orb + holo terminal)
+The AI chat is a living orb in the bottom-right corner that opens a HUD-style terminal. The parts live in `src/components/chat/`, the orb's scene in `src/components/three/chatOrbScene.ts`, and `Chatbot.tsx` wires them together.
+- **Orb (the button):** the hero sphere's noise shader and indigo → cyan palette at 0.55 of the hero's displacement, so it reads as a soft blob at 64px (72px from `sm`). It breathes, spins slowly, leans toward a pointer within 400px and grows on hover, with a breathing indigo halo behind it.
+  - It's lazy-loaded inside `DecorativeBoundary`. A CSS gradient orb holds its place until the first frame, and for good without WebGL.
+  - While the chat is open, the orb shrinks away and a cyan-ringed × takes its place. The orb pauses then, and while the tab is hidden.
+- **Terminal:** 350×476 from `sm`, the screen width minus 16px gutters on phones. Its height is capped at `calc(100dvh - 13rem)` so it clears the top bar.
+  - It swings open on its right-edge hinge from -96° and lands at rest (rotateY -24°, rotateX 2°), angled toward the page. It turns to -9° on hover and faces the visitor (0°) once they type, press inside or tab in.
+  - The focus the terminal places in the input on opening doesn't count as engaging, and engaging beats hover.
+  - Touch, narrow screens and reduced motion always face straight on. framer-motion drives the angles; the `.chat-*` rules in `index.css` are the look: glass, corner brackets, scanlines, caret and keycaps.
+- **Header and status:** `> ask_genessis` with a blinking caret. The status reads ONLINE (green), INPUT (cyan) while typing, or PROCESSING (indigo) while waiting.
+- **Messages:** `GENS.AI ›` replies sit on a cyan rule, and `YOU ›` lines sit in an indigo box.
+  - Replies decode in with the hero's code glyphs, behind a 10-character frontier, in at most 2s. The final Markdown layout is reserved from the first frame, and screen readers get the real text once.
+- **Keys:** three suggested questions ("What does Gens build?", "AI experience?", "Open to work?") are 3D keycaps that press down. Each disappears once asked, and they lock while waiting. Send is a `⏎ Enter` keycap.
+- **Focus:** the input gets focus 150ms after opening, unless the chat is already closing. Escape and [×] close it and return focus to the orb.
+- **Reduced motion:** a still orb, a fade instead of the swing, no scan band or caret blink, and replies appear at once.
+
 ### Gradient Blobs (decorative)
 ```tsx
 // Primary blob — indigo

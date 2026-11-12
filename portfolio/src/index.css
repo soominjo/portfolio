@@ -176,3 +176,265 @@
 ::view-transition-new(root) {
   z-index: 2;
 }
+
+/* Chat terminal: the holo terminal chat panel and its orb button.
+   framer-motion drives the panel's 3D angles; these rules are its look. */
+.chat-stage {
+  perspective: 900px;
+  perspective-origin: -20% 50%;
+}
+
+.chat-terminal {
+  background: linear-gradient(180deg, rgba(7, 12, 26, 0.97), rgba(4, 7, 16, 0.98));
+  /* Blurs the page behind the glass, so the hero's big name can't ghost through the text. */
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(34, 211, 238, 0.34);
+  box-shadow:
+    -40px 40px 70px -30px rgba(0, 0, 0, 0.85),
+    0 0 50px -10px rgba(34, 211, 238, 0.2),
+    inset 0 0 40px rgba(34, 211, 238, 0.05);
+}
+
+.light .chat-terminal {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 250, 255, 0.99));
+  border-color: rgba(8, 145, 178, 0.4);
+  box-shadow:
+    -40px 40px 70px -34px rgba(15, 23, 42, 0.35),
+    0 0 40px -16px rgba(8, 145, 178, 0.3);
+}
+
+.chat-corner {
+  position: absolute;
+  z-index: 20;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #22d3ee;
+  pointer-events: none;
+}
+
+.chat-corner--tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.chat-corner--tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.chat-corner--bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.chat-corner--br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+.light .chat-corner {
+  border-color: #0891b2;
+}
+
+.chat-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 3px);
+}
+
+.chat-scanlines::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -90px;
+  height: 90px;
+  background: linear-gradient(transparent, rgba(34, 211, 238, 0.07), transparent);
+  animation: chat-scan 5s linear infinite;
+}
+
+.light .chat-scanlines {
+  opacity: 0.45;
+}
+
+@keyframes chat-scan {
+  to { top: 100%; }
+}
+
+.chat-head {
+  border-bottom: 1px solid rgba(34, 211, 238, 0.18);
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.09), transparent 65%);
+}
+
+.light .chat-head {
+  border-color: rgba(8, 145, 178, 0.2);
+  background: linear-gradient(90deg, rgba(8, 145, 178, 0.08), transparent 65%);
+}
+
+.chat-caret {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background: #22d3ee;
+  animation: chat-blink 1s steps(1) infinite;
+}
+
+.light .chat-caret {
+  background: #0891b2;
+}
+
+@keyframes chat-blink {
+  50% { opacity: 0; }
+}
+
+.chat-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+  color: #4ade80;
+}
+
+.chat-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.chat-status[data-status='input'] { color: #22d3ee; }
+.chat-status[data-status='processing'] { color: #a5b4fc; }
+
+.chat-status[data-status='processing']::before {
+  animation: chat-blink 0.4s steps(1) infinite;
+}
+
+.light .chat-status { color: #16a34a; }
+.light .chat-status[data-status='input'] { color: #0891b2; }
+.light .chat-status[data-status='processing'] { color: #4f46e5; }
+
+.chat-log {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.35) transparent;
+}
+
+.chat-blocks {
+  display: flex;
+  gap: 3px;
+}
+
+.chat-blocks > i {
+  width: 7px;
+  height: 10px;
+  background: rgba(34, 211, 238, 0.16);
+  animation: chat-fill 1.2s steps(1) infinite;
+}
+
+.chat-blocks > i:nth-child(2) { animation-delay: 0.1s; }
+.chat-blocks > i:nth-child(3) { animation-delay: 0.2s; }
+.chat-blocks > i:nth-child(4) { animation-delay: 0.3s; }
+.chat-blocks > i:nth-child(5) { animation-delay: 0.4s; }
+.chat-blocks > i:nth-child(6) { animation-delay: 0.5s; }
+.chat-blocks > i:nth-child(7) { animation-delay: 0.6s; }
+.chat-blocks > i:nth-child(8) { animation-delay: 0.7s; }
+
+@keyframes chat-fill {
+  0%, 100% { background: rgba(34, 211, 238, 0.16); box-shadow: none; }
+  30%, 60% { background: #22d3ee; box-shadow: 0 0 8px #22d3ee; }
+}
+
+.chat-key {
+  padding: 7px 10px 8px;
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #cffafe;
+  background: linear-gradient(180deg, #11303f, #0a1c27);
+  box-shadow:
+    0 1px 0 #0e7490,
+    0 2px 0 #0c6880,
+    0 3px 0 #0a5a70,
+    0 4px 0 #084b5e,
+    0 9px 14px -4px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transform: translateY(-4px);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, color 0.2s ease;
+}
+
+.chat-key:hover:not(:disabled) {
+  color: #fff;
+  border-color: #22d3ee;
+}
+
+.chat-key:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow:
+    0 0 0 #0e7490,
+    0 2px 6px -2px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.chat-key:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.chat-key:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+}
+
+.light .chat-key {
+  color: #0e7490;
+  border-color: rgba(8, 145, 178, 0.45);
+  background: linear-gradient(180deg, #ffffff, #ecfeff);
+  box-shadow:
+    0 1px 0 #a5f3fc,
+    0 2px 0 #67e8f9,
+    0 3px 0 #22d3ee,
+    0 4px 0 #06b6d4,
+    0 9px 14px -5px rgba(8, 145, 178, 0.4);
+}
+
+.light .chat-key:hover:not(:disabled) {
+  color: #164e63;
+}
+
+.light .chat-key:active:not(:disabled) {
+  box-shadow:
+    0 0 0 #06b6d4,
+    0 2px 6px -2px rgba(8, 145, 178, 0.4);
+}
+
+.light .chat-key:focus-visible {
+  outline-color: #0891b2;
+}
+
+.chat-halo {
+  background: radial-gradient(closest-side, rgba(99, 102, 241, 0.45), rgba(34, 211, 238, 0.12) 62%, transparent);
+  animation: chat-halo 3.2s ease-in-out infinite;
+}
+
+.light .chat-halo {
+  background: radial-gradient(closest-side, rgba(99, 102, 241, 0.3), rgba(8, 145, 178, 0.1) 62%, transparent);
+}
+
+@keyframes chat-halo {
+  50% { transform: scale(1.12); opacity: 0.55; }
+}
+
+/* Holds the orb's place until WebGL draws it, and stands in without WebGL. */
+.chat-orb-fallback {
+  background: radial-gradient(circle at 35% 30%, #a5f3fc, #22d3ee 25%, #6366f1 65%, #312e81);
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-caret,
+  .chat-scanlines::after,
+  .chat-blocks > i,
+  .chat-status::before,
+  .chat-halo {
+    animation: none;
+  }
+}
