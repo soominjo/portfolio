@@ -188,6 +188,29 @@ The "What I Work With" block in About. It has one row per category in `shared/da
   - Every logo tile carries its name in `sr-only` text, so the tooltip is `aria-hidden`.
   - Keyboard users can't hover, so the hint points them to the Text view.
 
+### Projects Showcase (`src/components/projects/`)
+The Projects section is a pinned scroll through every project, engineering first, then QA. The order, taglines and device settings live in `shared/data/projects.ts`.
+- **Scroll:** a full-height stage (`sticky top-0 h-svh`) stays put while one invisible step per project scrolls behind it. Each step is 75svh, and the last is a full screen. The step crossing the middle of the viewport picks the project (`useActiveStep`, the same midline the nav uses). After the last step the stage scrolls away and Contact follows.
+- **Panel:** left of the devices from `lg`, below them on smaller screens. Top to bottom:
+  - an index line (`01 / 11`) after a gradient bar
+  - a `font-mono-label` meta line (`Professional · Full-Stack Developer`)
+  - the title in Syne; `titleSizeClass` steps long names down
+  - a one-line tagline
+  - the stack: up to six 40px logo tiles for engineering (marks via `getTechIcon()` and `readableOn()`, as in Tech Stack) or up to four chips for QA. The overflow becomes "+N more", and the hidden names stay in `sr-only` text.
+  - a primary "View more →" button
+
+  Every panel stays in the DOM and only the active one is visible. Keyboard focus on a hidden panel scrolls to its project.
+- **Devices:** a 3D laptop, plus a phone when `showPhone` is set, modelled in code with three.js (`src/components/three/devices/`, lazy-loaded inside `DecorativeBoundary`).
+  - **Screens:** the laptop shows `imageUrl`, cover-cropped to 16:10; `screenFocusX` (0–1, default 0.5) picks which side of a wider shot to keep. The phone shows `mobileImageUrl`, or a generated placeholder (the project's initial on the site gradient) until one exists. Screenshots cross-fade over 350 ms.
+  - **Finishes:** `silver`, `black` or `white`, set by `deviceFinish`, tweening between projects. Neighbouring projects never share one.
+  - **Motion:** the lid swings open and the phone springs up the first time the stage is in view, and the devices lean toward the cursor. When a project has no phone, the laptop slides to the centre.
+  - **No WebGL:** the desktop screenshot shows on its own.
+- **Background:** concentric indigo rings and a soft glow centred on the devices (`StageBackground`), fainter in the light theme.
+- **Progress:** a segmented bar at the bottom of the stage, grouped Engineering / QA Engineering, with the current segment in cyan. Clicking a segment jumps to that project. It is a mouse shortcut, so it is `aria-hidden` and out of the tab order.
+- **View more:** a native `<dialog>` with the full description, the whole stack as tech badges, and the screenshots. It has no demo links.
+- **Reduced motion:** no intro, no lean, and instant screen and finish changes; jumps skip smooth scrolling. The stage still pins.
+- **Screenshots:** WebP files in `public/projects/`, with desktop shots 1440px wide. A 16:10 capture (for example 1440×900) fills the laptop screen without any crop.
+
 ### Gradient Blobs (decorative)
 ```tsx
 // Primary blob — indigo
