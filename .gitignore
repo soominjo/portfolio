@@ -20,3 +20,6 @@ Thumbs.db
 
 .vercel
 .env*
+
+# Brainstorm mockups and plan-execution scratch (superpowers)
+.superpowers/

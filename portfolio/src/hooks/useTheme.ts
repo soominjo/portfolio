@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { flushSync } from 'react-dom'
 
-type Theme = 'dark' | 'light'
+export type Theme = 'dark' | 'light'
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {

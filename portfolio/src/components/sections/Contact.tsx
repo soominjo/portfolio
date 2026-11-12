@@ -73,7 +73,7 @@ export function Contact() {
     'w-full input-glow px-4 py-3 rounded-lg bg-white/[0.04] light:bg-slate-900/[0.03] border border-indigo-500/20 text-slate-200 light:text-slate-800 placeholder-slate-600 light:placeholder-slate-400 text-sm transition-colors'
 
   return (
-    <section id="contact" className="relative py-28 px-6 bg-[#070b14] light:bg-white">
+    <section id="contact" className="relative py-28 px-6 clear-side-nav bg-[#070b14] light:bg-white">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-indigo-500/40 to-transparent" />
 
       <div className="max-w-6xl mx-auto">

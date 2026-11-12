@@ -6,7 +6,12 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores([
+    'dist',
+    'coverage',
+    // Third-party React Bits backgrounds, kept close to upstream (see THIRD_PARTY_NOTICES.md).
+    'src/components/backgrounds/react-bits',
+  ]),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
