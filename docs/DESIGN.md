@@ -220,6 +220,30 @@ animate={{ opacity: 1, height: 'auto' }}
 exit={{ opacity: 0, height: 0 }}
 ```
 
+### Decoder Text (hero name)
+```tsx
+<DecoderText text="Genessis" delayMs={300} />
+```
+- Scrambles through code characters (brackets, operators and hex digits, in JetBrains Mono at 80% opacity) and resolves left to right on a framer-motion spring (`stiffness: 8, damping: 5`). Monospace glyphs are about as wide as the display letters, so the scramble stays close to the final width.
+- An invisible copy of the final text reserves its width, and the scramble is anchored at the start, so settled letters stay in place while glyphs swap.
+- Reduced motion: the final text appears immediately.
+
+### Rotating Words (hero role line)
+```tsx
+<RotatingWords words={['Full Stack Developer', 'QA Engineer', 'AI Engineer', 'Software Engineer']} />
+```
+- Shows the next word every 5 s (`intervalMs`). Each word is revealed by a cyan block wipe (`bg-cyan-400`, light theme `bg-cyan-600`) lasting 1.5 s after a 0.6 s delay, on the core easing.
+- Screen readers hear the whole list once ("A, B, C, and D"), not a new word every few seconds.
+- Reduced motion: first word only, with no rotation and no wipe.
+
+### Displacement Sphere (hero background)
+- A three.js noise-displaced sphere, lazy-loaded in its own chunk (`React.lazy`) so it never delays first paint.
+- The shader colours it indigo → cyan (`#6366f1` / `#22d3ee`), and it fades in to 85% opacity over 3 s.
+- It leans toward the cursor on a spring (`stiffness 30, damping 20, mass 2`), and its lighting follows the theme.
+- It pauses while off-screen, draws one still frame under reduced motion, and renders nothing when WebGL is unavailable.
+
+Adapted from Hamish Williams' portfolio (MIT). See `portfolio/THIRD_PARTY_NOTICES.md`.
+
 ---
 
 ## Layout
@@ -230,6 +254,7 @@ exit={{ opacity: 0, height: 0 }}
 - Scroll behavior: `scroll-smooth` on `html`
 - `min-h-screen` for hero section
 - Don't combine `desk:` and `lg:` on the same property. Tailwind emits custom variants after the breakpoint variants, so `desk:` always wins.
+- Hero: two lines only, left-aligned inside a centred column using hamishw.com's intro widths (780px, 920px above 1680px, 1024px above 2080px). The block is vertically centred and nudged up: 8vh on phones, 24px on desktop. On desktop, equal `desk:px-32` side padding keeps the column clear of the side nav and truly centred. The scroll indicator lines up with the column's left edge. Line one is the name on one line, as decoder text. It's white plus a glowing `text-indigo-400` surname in dark, and slate-900 plus `light:text-indigo-600` in light, which keeps the surname above 3:1 contrast. Line two is the rotating role. Under reduced motion the entrance is a plain fade (no slide) and the scroll dot stays still. A bottom gradient melts the sphere into the page colour. The portrait is paused for now; the cut-out photo is kept in `src/assets/portrait*.webp` for later.
 
 ---
 

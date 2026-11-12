@@ -20,7 +20,7 @@ function App() {
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
       <main>
-        <Hero />
+        <Hero theme={theme} />
         <About />
         <Projects />
         <Contact />
