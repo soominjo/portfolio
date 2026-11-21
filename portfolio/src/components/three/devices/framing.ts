@@ -7,9 +7,11 @@ export interface Framing {
 
 // World-space box the laptop and phone fill, with the lid open. The height
 // includes room under the phone, which stands nearer the camera and so
-// projects lower on wide, short canvases.
-const COMPOSITION = { width: 4.6, height: 3.0 } as const
-const MARGIN = 1.08
+// projects lower on wide, short canvases. The project backdrops size their
+// scenes from these too (see backdrops/backdropLayout.ts).
+export const COMPOSITION = { width: 4.6, height: 3.0 } as const
+/** Room the camera leaves around the composition, as a factor of its size. */
+export const MARGIN = 1.08
 const MIN_ASPECT = 0.5
 const TARGET_Y = 0.95
 // How far the camera rises per unit of distance, to look down onto the keyboard.

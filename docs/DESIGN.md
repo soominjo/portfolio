@@ -205,10 +205,30 @@ The Projects section is a pinned scroll through every project, engineering first
   - **Finishes:** `silver`, `black` or `white`, set by `deviceFinish`, tweening between projects. Neighbouring projects never share one.
   - **Motion:** the lid swings open and the phone springs up the first time the stage is in view, and the devices lean toward the cursor. When a project has no phone, the laptop slides to the centre.
   - **No WebGL:** the desktop screenshot shows on its own.
-- **Background:** concentric indigo rings and a soft glow centred on the devices (`StageBackground`), fainter in the light theme.
+- **Background:** each project has its own faint animated scene behind the devices (`backdrops/`), in colours taken from its screenshot. Scenes and palettes live in `backdrops/projectBackdrops.ts`:
+
+  | Project | Scene |
+  |---|---|
+  | Flinki | pose-tracking skeletons |
+  | Commission Monitoring | a ledger with a rising chart |
+  | unwnd.cafe | steam over warm light |
+  | Leads | a map with listing pins |
+  | Maneho.ai | an OCR scan of a ticket |
+  | Flux | a heart monitor |
+  | CADpractice | a blueprint |
+  | Switchboard | circuit traces with pulses |
+  | Talent Management | skill hexagons |
+  | Mythica | constellations |
+  | Reviva | an aurora |
+
+  - **Placement:** scenes draw on a 1440 × 900 virtual stage. It is centred on the device cell and sized to match the 3D framing.
+  - **Fade:** each scene fades out the way the old rings did: solid to 15% of the distance to the farthest corner, gone by 65%. Stacked layouts also fade it across the bottom of the device cell, so the text stays clean.
+  - **Switching:** the scene cross-fades over 700 ms between projects.
+  - **Cost:** two stacked 2D canvases, lazy-loaded inside `DecorativeBoundary`, drawing at most 30 frames a second. Parts that don't move are cached, and the scene pauses while off screen.
+  - **Fallback:** the CSS rings and glow (`StageBackground`) stay underneath. They show for projects without a scene, in browsers without a 2D canvas, and on screens too short for the devices.
 - **Progress:** a segmented bar at the bottom of the stage, grouped Engineering / QA Engineering, with the current segment in cyan. Clicking a segment jumps to that project. It is a mouse shortcut, so it is `aria-hidden` and out of the tab order.
 - **View more:** a native `<dialog>` with the full description, the whole stack as tech badges, and the screenshots. It has no demo links.
-- **Reduced motion:** no intro, no lean, and instant screen and finish changes; jumps skip smooth scrolling. The stage still pins.
+- **Reduced motion:** no intro, no lean, and instant screen and finish changes; jumps skip smooth scrolling. The backdrop shows each scene as a still, finished frame and switches without the cross-fade. The stage still pins.
 - **Screenshots:** WebP files in `public/projects/`, with desktop shots 1440px wide. A 16:10 capture (for example 1440×900) fills the laptop screen without any crop.
 
 ### Chatbot (orb + holo terminal)

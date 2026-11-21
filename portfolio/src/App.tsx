@@ -22,7 +22,7 @@ function App() {
 
       <main>
         <Hero theme={theme} />
-        <Projects />
+        <Projects theme={theme} />
         <About />
         <Contact />
       </main>
