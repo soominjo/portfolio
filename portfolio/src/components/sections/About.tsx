@@ -2,14 +2,6 @@ import { motion, type Variants } from 'framer-motion'
 import { useExperience } from '../../hooks/useExperience'
 import { TechStack } from '../skills/TechStack'
 
-const facts = [
-  { label: 'Role', value: 'Software Engineer · Frontend-leaning Full-Stack' },
-  { label: 'Focus', value: 'Full-Stack · AI/RAG Systems · Web & Mobile' },
-  { label: 'Location', value: 'Bacoor City, Cavite, Philippines' },
-  { label: 'Email', value: 'genesis060102@gmail.com' },
-  { label: 'Status', value: 'Open to opportunities' },
-]
-
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
@@ -23,90 +15,11 @@ export function About() {
       {/* Subtle top border glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-linear-to-r from-transparent via-indigo-500/40 to-transparent" />
 
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          className="mb-16"
-        >
-          <p className="font-mono-label text-xs text-indigo-400 tracking-[0.25em] uppercase mb-3">
-            // about.sys
-          </p>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-white light:text-slate-900 mb-3">
-            Full-Stack Engineer &nbsp;·&nbsp; AI/LLM Integrations &nbsp;·&nbsp; QA Engineer
-          </h2>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-16 items-start mb-24">
-          {/* Bio */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            className="space-y-5"
-          >
-            <p className="text-slate-300 light:text-slate-700 leading-relaxed text-lg">
-              I&apos;m a Software Engineer based in Bacoor City, Cavite, Philippines, and a
-              graduated Information Technology from Cavite State
-              University – Bacoor City Campus. Most recently, I built full-stack, AI-powered
-              products at Hytel Pte Ltd.
-            </p>
-            <p className="text-slate-400 light:text-slate-600 leading-relaxed">
-              That title took a few steps to earn. I started as an IT Intern at Inner
-              SPARC Realty and was promoted to Full-Stack Developer after building a
-              commission monitoring system from the ground up — one still used by over a
-              hundred people to automate work that used to be manual. At Hytel, the path
-              bent again: I started in QA, tracking bugs and hardening CI/CD pipelines
-              across enterprise projects, before earning my way into full-stack
-              engineering on a mobile-first product with a deep focus on AI — RAG
-              pipelines, LLM integrations, and more, collaborating with product managers
-              and developers to ship features end to end. I rounded that out with AI
-              enablement training, sharpening how I evaluate and apply AI in production.
-            </p>
-            <p className="text-slate-500 light:text-slate-600 leading-relaxed">
-              Outside of work, I&apos;m always building — AI legal assistants, fitness trackers,
-              mental health platforms. I like turning ambiguous problems into clean,
-              reliable software that real people depend on.
-            </p>
-          </motion.div>
-
-          {/* Quick facts — terminal style */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            className="card-glass rounded-xl p-6 space-y-0"
-          >
-            <p className="font-mono-label text-xs text-slate-600 light:text-slate-500 mb-4 pb-3 border-b border-indigo-500/10">
-              ~ genessis/profile.json
-            </p>
-            {facts.map((fact, i) => (
-              <div
-                key={fact.label}
-                className="flex gap-3 py-2.5 border-b border-white/4 light:border-slate-900/8 last:border-0"
-              >
-                <span className="font-mono-label text-xs text-indigo-400 light:text-indigo-600 w-20 shrink-0 pt-0.5">
-                  {fact.label}
-                </span>
-                <span className="font-mono-label text-xs text-slate-300 light:text-slate-700 leading-relaxed">
-                  {i === 3 ? (
-                    <a href={`mailto:${fact.value}`} className="hover:text-cyan-400 light:hover:text-cyan-700 transition-colors">
-                      {fact.value}
-                    </a>
-                  ) : fact.value}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
+      {/* #experience covers the timeline and the tech stack, so the nav's
+          "Experience" stays current through both (About has no link of its own). */}
+      <div id="experience" className="max-w-6xl mx-auto scroll-mt-20 desk:scroll-mt-0">
         {/* Experience */}
-        <div id="experience" className="max-w-4xl mb-24 scroll-mt-20 desk:scroll-mt-0">
+        <div className="max-w-4xl mb-24">
           <motion.div
             variants={fadeUp}
             initial="hidden"

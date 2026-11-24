@@ -9,7 +9,7 @@ Each file containing adapted code says so in a comment at its top.
 
 Source: https://github.com/HamishMW/portfolio
 
-Adapted in `src/components/motion/` (decoder text and rotating words), `src/components/three/` (displacement sphere, and the chat orb that reuses its shader), `src/components/three/devices/` (the laptop lid swinging open, the phone springing up and the cursor lean, applied to devices modelled here in code) and `src/components/layout/` (side-nav spacing, the phone menu and the theme-toggle icon). The colours, fonts and copy have been changed to fit this site.
+Adapted in `src/components/motion/` (decoder text and rotating words), `src/components/three/` (displacement sphere, and the chat orb that reuses its shader), `src/components/three/devices/` (the laptop lid swinging open, the phone springing up and the cursor lean, applied to devices modelled here in code), `src/components/layout/` (side-nav spacing, the phone menu and the theme-toggle icon) and `src/components/sections/Contact.tsx` and `src/components/contact/` (the "Hi there" block's two-column layout, after his profile section, and his send icon). The colours, fonts and copy have been changed to fit this site.
 
 ```
 MIT License

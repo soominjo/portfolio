@@ -11,7 +11,12 @@ export const CHAT_TERMINAL_ID = 'chat-terminal'
  * Gens' AI assistant: a living 3D orb in the corner that opens the holo
  * terminal. The conversation lives here, so it survives closing and reopening.
  */
-export function Chatbot() {
+interface ChatbotProps {
+  /** True while the /contact page hides the homepage, so the orb stops drawing. */
+  readonly pageHidden?: boolean
+}
+
+export function Chatbot({ pageHidden = false }: ChatbotProps) {
   const [open, setOpen] = useState(false)
   const chat = useChat()
   const theme = useDocumentTheme()
@@ -39,6 +44,7 @@ export function Chatbot() {
         controlsId={CHAT_TERMINAL_ID}
         theme={theme}
         onToggle={() => setOpen((isOpen) => !isOpen)}
+        pageHidden={pageHidden}
       />
     </>
   )

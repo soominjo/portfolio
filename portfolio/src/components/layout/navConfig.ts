@@ -3,9 +3,10 @@ export interface NavLink {
   readonly href: string
 }
 
+// About's bio lives in Contact now, so About has no link of its own:
+// #experience covers the rest of that section (the timeline and the tech stack).
 export const NAV_LINKS: readonly NavLink[] = [
   { label: 'Projects', href: '#projects' },
-  { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
   { label: 'Contact', href: '#contact' },
 ]

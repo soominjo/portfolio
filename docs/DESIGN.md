@@ -120,7 +120,7 @@ Dark, technical, cyberpunk-adjacent. The aesthetic is precision-engineered: deep
 Spacing is copied from Hamish Williams' portfolio (MIT).
 - **Desktop (`desk`, meaning at least 48rem wide and 43rem tall):** a fixed 48px column (`w-12`), inset by the outer margin on top, left and bottom: 48px, or 64px above 1680px wide. It has no background and no border, so it floats over the page. The side nav needs about 43rem of height, so shorter screens get the phone menu, as on hamishw.com.
   - **Logo:** `GC.` in `font-display text-2xl font-bold`, padded 8px with 24px below (`p-2 pb-6`).
-  - **Links:** directly under the logo, set vertically and reading bottom to top (`[writing-mode:vertical-lr] rotate-180`). They use DM Sans at 16px medium in normal case (`text-base font-medium`), with 16px padding each, in `text-slate-300/80` that turns white on hover or when current.
+  - **Links:** directly under the logo, set vertically and reading bottom to top (`[writing-mode:vertical-lr] rotate-180`). They use DM Sans at 16px medium in normal case (`text-base font-medium`), with 16px padding each, in `text-slate-300/80` that turns white on hover or when current. They are Projects, Experience and Contact. About has no link since its bio moved into Contact, and `#experience` covers the timeline and the tech stack.
   - **Active bar:** a 4px cyan bar (`light:bg-cyan-600` for contrast on the light page) runs through the hovered, keyboard-focused or current link, inset 8px from both ends. It uses physical `top-2 bottom-2`, because Tailwind's `inset-y` is logical and runs sideways in vertical text, and it is centred with `left-1/2 -translate-x-1/2`.
   - **Current link:** follows the section crossing the middle of the viewport (`useActiveSection`, `aria-current="location"`), not the last click. Nothing is marked while the hero is in view.
   - **Bottom:** GitHub, LinkedIn and Resume, in 48px boxes with 8px padding and 20px icons.
@@ -263,6 +263,59 @@ The site cursor is a small rocket pointing up-left. Its nose is the click point.
 - **Reduced motion:** the rocket stays but there is no exhaust.
 - **Keeping CSS and code in step:** `cursorRules.ts` mirrors the selectors and media query from `index.css`, and `cursorRules.test.ts` fails if they drift.
 - **Editing the art:** re-export both PNGs from the SVG after editing it. Vite keeps the PNGs out of the stylesheet (`assetsInlineLimit` in `vite.config.ts`), so they never block first paint.
+
+### Contact (`sections/Contact.tsx`, `src/components/contact/`)
+The homepage ends on a personal "Hi there" block, laid out like the profile section on hamishw.com. Its button opens the form on a page of its own, `/contact`.
+
+**The Contact block (`#contact`)**
+- **Layout:** two columns from `lg` (`1fr` and 46%, a 48px gap, up to 1096px wide). On phones they stack.
+- **Left column, top to bottom:**
+  - the `// get.in.touch` label
+  - "Hi there" in Syne, decoding in once it scrolls into view
+  - the bio, moved from About, with Hytel and Flinki as external links through `ExternalBioLink`
+  - "Send me a message", in cyan with the send icon. It's a real link to `/contact`. A plain left click switches pages in-app; any other click is left to the browser.
+- **Right column (`HoloPortrait`)**, starting 128px lower on desktop, top to bottom:
+  - a gradient bar and `profile.webp`
+  - the cut-out portrait in the chat terminal's glass frame (corner brackets and scanlines), with a `~ genessis/profile.webp` head row and a green `AVAILABLE` status
+  - behind the photo, a masked cyan grid and an indigo glow
+  - `GENESSIS S. CONTRERAS` and `CAVITE · PH` beneath the frame
+- **Photo crop:** the image is drawn 118% tall from 6% down, a head-and-shoulders crop. That keeps the photo's bottom out of the frame; the source has a small watermark on the jacket pocket, which must never show.
+- **Motion:** both columns fade up once on scroll, using the core easing, with the photo 0.1s after the bio. Reduced motion keeps only the fades.
+
+**The form page (`/contact`, `ContactPage`)**
+- **Chrome:** nothing from the homepage. Just the `GC.` logo and "← Back to portfolio" (both go back) and the theme toggle, over the page colour and the 60px grid.
+- **Arriving:** scrolls to the top, focuses the `h1` "Send me a message", and sets the tab title to "Contact — Genessis Contreras". The old title comes back on leaving.
+
+**The terminal form (`TerminalForm`, `PromptRow`)**
+It's a sibling of the chat's holo terminal, built from its `.chat-*` classes.
+- **Head row:** `> new_message` with a blinking caret, then a status:
+  - `ONLINE` (green)
+  - `INPUT` (cyan) while a field has focus
+  - `SENDING` (indigo, blinking) while a send is in flight
+- **Rows:** `name ›`, `email ›` and `message ›` (four rows tall). Each row is a label, and the focused one gets a cyan left bar and a faint wash.
+  - The chevron is CSS content with empty alt text, so labels and accessible names are just the key.
+  - Below 401px wide, each key sits above its field.
+- **Sending:** press the `⏎ Send message` keycap, or Ctrl+Enter / ⌘+Enter from any field. A plain Enter in the message adds a new line.
+  - While sending, the keycap reads `SENDING…` and is `aria-disabled` but still focusable.
+  - A hidden `role="status"` line announces the send.
+- **Checks:** zod mirrors `/api/contact` (`contactSchema.ts`).
+  - Field errors are red `✗` lines under their rows, linked by `aria-describedby` and set as `role="alert"`.
+  - A failed send shows `✗` with the server's message, or a fallback, and keeps what the visitor typed.
+  - A lock in `useContactSubmit` stops a second send. It releases on an error and stays on after a success.
+- **Sent:** the rows become a log that takes focus, with `↺ New message` and `← Portfolio` keycaps below it. The log reads:
+  - `> sending message… done`
+  - `✓ delivered`
+  - `> I'll reply within 24 hours.`
+- **No confirmation-email promise:** the visitor auto-reply in `api/contact.ts` still sends from Resend's test sender, which only reaches the account owner.
+- **Confetti:** bursts from the keycap, except under reduced motion.
+
+**Page switching (`hooks/useRoute.ts`)**
+- **A real address:** `/contact` works on refresh and from shared links, through Vercel's catch-all rewrite.
+- **No reload:** the button switches pages with `history.pushState`, cross-faded by a view transition when motion is allowed.
+- **The homepage while `/contact` shows:** it stays mounted, but `hidden` and `inert`. Being `display: none` pauses the 3D scenes.
+  - The chat orb pauses through `Chatbot`'s `pageHidden`, and an open chat survives the trip.
+  - A direct visit to `/contact` doesn't load the homepage until the visitor goes there.
+- **Coming back:** the browser's Back, "← Back to portfolio", the logo and `← Portfolio` all return to where the visitor left the homepage. After a direct visit, they go to the Contact block. Focus lands on "Send me a message".
 
 ### Gradient Blobs (decorative)
 ```tsx
