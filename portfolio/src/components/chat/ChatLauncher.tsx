@@ -12,6 +12,8 @@ export interface ChatLauncherProps {
   controlsId: string
   theme: Theme
   onToggle: () => void
+  /** True while another page (/contact) hides the homepage; the orb stops drawing. */
+  pageHidden?: boolean
   ref?: Ref<HTMLButtonElement>
 }
 
@@ -20,7 +22,7 @@ export interface ChatLauncherProps {
  * the 3D orb has drawn (or for good, without WebGL). While the chat is open the
  * orb tucks away and a cyan × takes its place.
  */
-export function ChatLauncher({ open, controlsId, theme, onToggle, ref }: ChatLauncherProps) {
+export function ChatLauncher({ open, controlsId, theme, onToggle, pageHidden = false, ref }: ChatLauncherProps) {
   const [orbReady, setOrbReady] = useState(false)
   const markOrbReady = useCallback(() => setOrbReady(true), [])
 
@@ -52,7 +54,7 @@ export function ChatLauncher({ open, controlsId, theme, onToggle, ref }: ChatLau
         )}
         <DecorativeBoundary>
           <Suspense fallback={null}>
-            <ChatOrb theme={theme} paused={open} onReady={markOrbReady} />
+            <ChatOrb theme={theme} paused={open || pageHidden} onReady={markOrbReady} />
           </Suspense>
         </DecorativeBoundary>
       </span>

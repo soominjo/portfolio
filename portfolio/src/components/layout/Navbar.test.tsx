@@ -32,7 +32,6 @@ function renderWithPage() {
 
 const SECTIONS = [
   ['Projects', '#projects'],
-  ['About', '#about'],
   ['Experience', '#experience'],
   ['Contact', '#contact'],
 ] as const
@@ -44,6 +43,8 @@ describe('Navbar', () => {
     for (const [label, href] of SECTIONS) {
       expect(within(rail).getByRole('link', { name: label })).toHaveAttribute('href', href)
     }
+    // About's bio moved into Contact, so it no longer has a link of its own.
+    expect(within(rail).queryByRole('link', { name: 'About' })).toBeNull()
   })
 
   it('opens GitHub and LinkedIn in a new tab', () => {
@@ -114,10 +115,10 @@ describe('Navbar', () => {
         'location',
       ),
     )
-    expect(within(rail).getByRole('link', { name: 'About' })).not.toHaveAttribute('aria-current')
+    expect(within(rail).getByRole('link', { name: 'Experience' })).not.toHaveAttribute('aria-current')
   })
 
-  it('prefers Experience over About while both cross the middle', async () => {
+  it('keeps Experience current while #experience crosses the middle', async () => {
     intersection.byId = { about: true, experience: true }
     const rail = renderWithPage()
     await waitFor(() =>
@@ -126,15 +127,14 @@ describe('Navbar', () => {
         'location',
       ),
     )
-    expect(within(rail).getByRole('link', { name: 'About' })).not.toHaveAttribute('aria-current')
   })
 
   it('follows the section in view rather than the last click', async () => {
-    intersection.byId = { about: true }
+    intersection.byId = { experience: true }
     const rail = renderWithPage()
     fireEvent.click(within(rail).getByRole('link', { name: 'Projects' }))
     await waitFor(() =>
-      expect(within(rail).getByRole('link', { name: 'About' })).toHaveAttribute(
+      expect(within(rail).getByRole('link', { name: 'Experience' })).toHaveAttribute(
         'aria-current',
         'location',
       ),
