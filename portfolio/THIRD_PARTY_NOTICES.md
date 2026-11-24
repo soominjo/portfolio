@@ -9,7 +9,7 @@ Each file containing adapted code says so in a comment at its top.
 
 Source: https://github.com/HamishMW/portfolio
 
-Adapted in `src/components/motion/` (decoder text and rotating words), `src/components/three/` (displacement sphere, and the chat orb that reuses its shader), `src/components/three/devices/` (the laptop lid swinging open, the phone springing up and the cursor lean, applied to devices modelled here in code), `src/components/layout/` (side-nav spacing, the phone menu and the theme-toggle icon) and `src/components/sections/Contact.tsx` and `src/components/contact/` (the "Hi there" block's two-column layout, after his profile section, and his send icon). The colours, fonts and copy have been changed to fit this site.
+Adapted in `src/components/motion/` (decoder text and rotating words), `src/components/three/` (the chat orb, drawn with his displacement sphere's shader), `src/components/three/devices/` (the laptop lid swinging open, the phone springing up and the cursor lean, applied to devices modelled here in code), `src/components/layout/` (side-nav spacing, the phone menu and the theme-toggle icon) and `src/components/sections/Contact.tsx` and `src/components/contact/` (the "Hi there" block's two-column layout, after his profile section, and his send icon). The colours, fonts and copy have been changed to fit this site.
 
 ```
 MIT License
@@ -41,7 +41,7 @@ SOFTWARE.
 
 Source: https://github.com/ashima/webgl-noise
 
-The classic Perlin noise (`pnoise`) used by the displacement sphere shader, by way of Hamish Williams' portfolio.
+The classic Perlin noise (`pnoise`) in the chat orb's shader (`src/components/three/sphereShader.ts`), by way of Hamish Williams' portfolio.
 
 ```
 Copyright (C) 2011 by Ashima Arts (Simplex noise)
@@ -72,7 +72,7 @@ THE SOFTWARE.
 
 Source: https://github.com/DavidHDev/react-bits
 
-The background lab in `src/components/backgrounds/react-bits/` includes React Bits' Orb, Galaxy, Particles, Topography and Grid Scan backgrounds. Each has a header comment and no Next.js `'use client'` directive. Topography is otherwise unchanged. Orb, Galaxy, Particles and Grid Scan also release their WebGL context a frame late, as Topography already does, so React StrictMode's development-only remount doesn't reuse a lost context. Their colours are set through props in `src/components/backgrounds/labBackgrounds.tsx`.
+The hero background in `src/components/backgrounds/react-bits/` is React Bits' Particles. It has a header comment and no Next.js `'use client'` directive, and it releases its WebGL context a frame late, as React Bits' Topography does, so React StrictMode's development-only remount doesn't reuse a lost context. Its colours are set through props in `src/components/backgrounds/HeroBackground.tsx`.
 
 ```
 MIT + Commons Clause License Condition v1.0

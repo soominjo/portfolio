@@ -66,7 +66,7 @@ export function Hero({ theme }: HeroProps) {
         }}
       />
 
-      {/* WebGL background: the particles, or a lab candidate in dev and preview builds */}
+      {/* WebGL background: the particles */}
       <HeroBackground theme={theme} />
 
       {/* Bottom fade: melts the WebGL background into the page colour */}

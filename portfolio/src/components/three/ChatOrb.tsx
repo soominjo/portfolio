@@ -12,7 +12,7 @@ export interface ChatOrbProps {
   onReady: () => void
 }
 
-// The hero sphere's rotation spring, so both lean with the same weight.
+// The rotation spring of Hamish Williams' displacement sphere, which the orb is drawn from.
 const LEAN_SPRING = { stiffness: 30, damping: 20, mass: 2 } as const
 const DEFAULT_SIZE_PX = 72
 
@@ -21,8 +21,8 @@ function fitToCanvas(orb: ChatOrbScene, canvas: HTMLCanvasElement): void {
 }
 
 /**
- * The chat button's living orb: the hero sphere's noise shader, shrunk to a
- * button. It leans toward a nearby pointer, pauses while the chat is open or
+ * The chat button's living orb: the displacement-sphere noise shader, shrunk
+ * to a button. It leans toward a nearby pointer, pauses while the chat is open or
  * the tab is hidden, draws one still frame under reduced motion, and renders
  * nothing when WebGL is unavailable, so the launcher's CSS orb stays.
  */
