@@ -1,6 +1,6 @@
 import type { Project, ProjectType } from '../../../../shared/types/project'
 
-export const TYPE_LABELS: Readonly<Record<ProjectType, string>> = {
+const TYPE_LABELS: Readonly<Record<ProjectType, string>> = {
   internal: 'Internal System',
   external: 'External Project',
   personal: 'Personal Project',

@@ -55,7 +55,7 @@ export const NOZZLE_OFFSET: Point = {
 export const MAX_STEP = 240
 
 /** The most particles alive at once, so a frantic mouse can't pile up work. */
-export const MAX_PARTICLES = 180
+const MAX_PARTICLES = 180
 
 // The exhaust leaves along the body, down and to the right, in a 0.8 rad cone.
 const EXHAUST_ANGLE = Math.PI / 4

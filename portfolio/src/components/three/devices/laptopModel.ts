@@ -16,7 +16,7 @@ import { createRoundedPlane, createRoundedSlab } from './roundedRect'
 import { createScreenLayers, type ScreenLayers } from './screenLayers'
 
 /** World units; the laptop's base sits on y = 0, centred on x and z. */
-export const LAPTOP = {
+const LAPTOP = {
   width: 3,
   depth: 2.05,
   baseThickness: 0.075,

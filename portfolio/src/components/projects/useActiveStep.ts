@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 // A line across the middle of the viewport; the step crossing it is active.
-export const STEP_MIDLINE = '-50% 0px -50% 0px'
+const STEP_MIDLINE = '-50% 0px -50% 0px'
 
 /** The latest step crossing the midline, or `previous` when none is. */
 export function nextActiveStep(previous: number, crossing: ReadonlySet<number>): number {

@@ -4,7 +4,7 @@ import { createRoundedPlane, createRoundedSlab } from './roundedRect'
 import { createScreenLayers, type ScreenLayers } from './screenLayers'
 
 /** World units; the phone stands on y = 0, centred on x and z, screen facing +z. */
-export const PHONE = {
+const PHONE = {
   width: 0.74,
   height: 1.52,
   depth: 0.075,

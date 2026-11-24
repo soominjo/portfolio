@@ -2,7 +2,7 @@ import confetti from 'canvas-confetti'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ContactFormData } from './contactSchema'
 
-export type SendState =
+type SendState =
   | { readonly kind: 'idle' }
   | { readonly kind: 'sending' }
   | { readonly kind: 'sent' }

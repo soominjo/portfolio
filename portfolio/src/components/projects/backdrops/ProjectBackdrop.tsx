@@ -6,7 +6,7 @@ import { createBackdropStage, type BackdropStage } from './backdropStage'
 import { backdropFor } from './projectBackdrops'
 
 /** Tailwind's `lg`: from here the devices sit beside the text instead of above it. */
-export const SIDE_BY_SIDE_QUERY = '(min-width: 1024px)'
+const SIDE_BY_SIDE_QUERY = '(min-width: 1024px)'
 
 interface ProjectBackdropProps {
   /** The project on show; its scene fades in behind the devices. */

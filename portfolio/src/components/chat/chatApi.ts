@@ -1,4 +1,4 @@
-export type ChatRole = 'user' | 'assistant'
+type ChatRole = 'user' | 'assistant'
 
 export interface ChatMessage {
   readonly id: string
@@ -14,7 +14,7 @@ export interface HistoryItem {
   readonly content: string
 }
 
-export const WELCOME_ID = 'welcome'
+const WELCOME_ID = 'welcome'
 
 export const WELCOME_MESSAGE: ChatMessage = {
   id: WELCOME_ID,

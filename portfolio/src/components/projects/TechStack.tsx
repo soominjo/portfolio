@@ -15,8 +15,8 @@ import { SkillTooltip } from '../skills/SkillTooltip'
 import { SKILL_ATTRIBUTE, useActiveSkill, type SkillHandlers, type SkillState } from '../skills/useActiveSkill'
 import { techInitials } from './techInitials'
 
-export const MAX_ICONS = 6
-export const MAX_CHIPS = 4
+const MAX_ICONS = 6
+const MAX_CHIPS = 4
 
 // Each stack is a single row, so a hovered logo fades only its own neighbours.
 const ROW = 'stack'

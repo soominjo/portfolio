@@ -1,7 +1,7 @@
 import { GLYPHS } from '../motion/decoder'
 
 /** How many scrambling characters run ahead of the settled text. */
-export const DECODE_FRONTIER = 10
+const DECODE_FRONTIER = 10
 
 const MS_PER_CHAR = 15
 const MIN_DURATION_MS = 600
