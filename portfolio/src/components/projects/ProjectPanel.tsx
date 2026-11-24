@@ -1,5 +1,6 @@
 import { useId } from 'react'
 import type { Project } from '../../../../shared/types/project'
+import { LiveSiteLink } from './LiveSiteLink'
 import { formatIndex, metaLine, PANEL_SPACING, titleSizeClass } from './panelText'
 import { TechStack } from './TechStack'
 import type { ViewportFit } from './useViewportFit'
@@ -26,8 +27,8 @@ const VISIBILITY = {
 
 /**
  * One project's text in the showcase: number, details line, title, tagline,
- * stack and "View more". Every panel stays in the DOM (screen readers can read
- * them all); only the active one is visible.
+ * stack, "View more" and "Visit site". Every panel stays in the DOM (screen
+ * readers can read them all); only the active one is visible.
  */
 export function ProjectPanel({ project, index, total, active, fit = 'regular', onOpenDetails, onFocusInactive }: ProjectPanelProps) {
   const titleId = useId()
@@ -61,17 +62,20 @@ export function ProjectPanel({ project, index, total, active, fit = 'regular', o
       <p className={`max-w-md leading-relaxed text-slate-300 light:text-slate-600 ${spacing.tagline}`}>{project.tagline}</p>
 
       <div className={spacing.stack}>
-        <TechStack items={project.techStack} variant={project.category === 'qa' ? 'chips' : 'icons'} />
+        <TechStack items={project.techStack} variant={project.category === 'qa' ? 'chips' : 'icons'} visible={active} />
       </div>
 
-      <button
-        type="button"
-        aria-label={`View more about ${project.title}`}
-        onClick={() => onOpenDetails(project)}
-        className={`btn-glow inline-flex items-center gap-2.5 rounded-lg bg-indigo-600 px-6 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${spacing.button}`}
-      >
-        View more <span aria-hidden="true">&rarr;</span>
-      </button>
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          aria-label={`View more about ${project.title}`}
+          onClick={() => onOpenDetails(project)}
+          className={`btn-glow inline-flex items-center gap-2.5 rounded-lg bg-indigo-600 px-6 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${spacing.button}`}
+        >
+          View more <span aria-hidden="true">&rarr;</span>
+        </button>
+        <LiveSiteLink project={project} className={spacing.button} />
+      </div>
     </article>
   )
 }

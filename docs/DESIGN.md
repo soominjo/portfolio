@@ -193,11 +193,13 @@ The Projects section is a pinned scroll through every project, engineering first
 - **Scroll:** a full-height stage (`sticky top-0 h-svh`) stays put while one invisible step per project scrolls behind it. Each step is 75svh, and the last is a full screen. The step crossing the middle of the viewport picks the project (`useActiveStep`, the same midline the nav uses). After the last step the stage scrolls away and Contact follows.
 - **Panel:** left of the devices from `lg`, below them on smaller screens. Top to bottom:
   - an index line (`01 / 11`) after a gradient bar
-  - a `font-mono-label` meta line (`Professional · Full-Stack Developer`)
+  - a `font-mono-label` meta line: who it was built for (`Internal System`, `External Project` or `Personal Project`), then the role, e.g. `External Project · Full-Stack Developer`
   - the title in Syne; `titleSizeClass` steps long names down
   - a one-line tagline
-  - the stack: up to six 40px logo tiles for engineering (marks via `getTechIcon()` and `readableOn()`, as in Tech Stack) or up to four chips for QA. The overflow becomes "+N more", and the hidden names stay in `sr-only` text.
-  - a primary "View more →" button
+  - the stack: up to six 40px logo tiles for engineering (marks via `getTechIcon()` and `readableOn()`, as in Tech Stack) or up to four chips for QA. The overflow becomes "+N more", and the hidden names stay in `sr-only` text. Logo tiles take Tech Stack's interaction (`useActiveSkill`, `SkillTooltip`): hover, or tap on touch, lifts the tile, tints it to `--mark`, fades the stack's other logos and names it in the decoder tooltip. "+N more" behaves like a Tech Stack text pill (cyan accent) and lists the hidden names in the same tooltip. Hiding a panel clears its highlight.
+  - a primary "View more →" button, plus an outlined "Visit site ↗" link (new tab) when the project has a public `liveUrl`
+
+  QA taglines describe the product, not the testing ("A mythology magazine…"), since the meta line already says QA Engineer.
 
   Every panel stays in the DOM and only the active one is visible. Keyboard focus on a hidden panel scrolls to its project.
 - **Devices:** a 3D laptop, plus a phone when `showPhone` is set, modelled in code with three.js (`src/components/three/devices/`, lazy-loaded inside `DecorativeBoundary`).

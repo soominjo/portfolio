@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, type MouseEvent } from 'react'
 import type { Project } from '../../../../shared/types/project'
+import { LiveSiteLink } from './LiveSiteLink'
 import { metaLine } from './panelText'
 
 interface ProjectDetailsDialogProps {
@@ -78,6 +79,7 @@ export function ProjectDetailsDialog({ project, onClose }: ProjectDetailsDialogP
           </div>
 
           <p className="mb-6 leading-relaxed">{project.purpose}</p>
+          <LiveSiteLink project={project} className="mb-6 py-2.5" />
 
           <h3 className="font-mono-label mb-3 text-xs uppercase tracking-widest text-indigo-400 light:text-indigo-600">Tech stack</h3>
           <ul className="flex flex-wrap gap-1.5">

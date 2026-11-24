@@ -31,3 +31,17 @@ export const itemVariants: Variants = {
 
 /** Springs between rest, active and dimmed. */
 export const STATE_SPRING: Transition = { type: 'spring', stiffness: 460, damping: 30 }
+
+/** A text pill at rest, nudged up while active, and faded beside the active one. */
+export const PILL_STATE_VARIANTS: Variants = {
+  rest: { y: 0, opacity: 1 },
+  active: { y: -2, opacity: 1 },
+  dimmed: { y: 0, opacity: 0.45 },
+}
+
+/** A logo tile at rest, lifted while active, and faded beside the active one. */
+export const TILE_STATE_VARIANTS: Variants = {
+  rest: { y: 0, scale: 1, opacity: 1, filter: 'saturate(1)' },
+  active: { y: -4, scale: 1.08, opacity: 1, filter: 'saturate(1)' },
+  dimmed: { y: 0, scale: 0.94, opacity: 0.4, filter: 'saturate(0.3)' },
+}

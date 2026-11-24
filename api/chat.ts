@@ -21,8 +21,9 @@ one-sentence introduction followed by concise bullet points grouped under bold l
 without bullets — only use lists when summarizing multiple items.`
 
 const PROJECT_TYPE_LABELS: Record<Project['type'], string> = {
+  internal: 'Internal system built for an employer',
+  external: 'External project for a client or the public',
   personal: 'Personal project',
-  professional: 'Professional work for an employer or client',
 }
 
 function formatProject(project: Project, index: number): string {

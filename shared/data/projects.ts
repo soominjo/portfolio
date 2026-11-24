@@ -8,7 +8,8 @@ export const featuredProjects: Project[] = [
     id: 'flinki',
     title: 'Flinki',
     category: 'engineering',
-    type: 'professional',
+    type: 'external',
+    liveUrl: 'https://flinki.co/',
     tagline: 'An AI-powered identity engine for sport and adventure.',
     purpose:
       "The world's first AI-powered identity engine for sports and adventure — Flinki lets athletes build a digital sports CV, discover local and global events, and shop gear, connecting athletes, clubs, and organizations around a shared sporting lifestyle.",
@@ -25,7 +26,7 @@ export const featuredProjects: Project[] = [
     id: 'commission-monitoring-system',
     title: 'Commission Monitoring System',
     category: 'engineering',
-    type: 'professional',
+    type: 'internal',
     tagline: 'Tranches, commissions and receivables, automated for a 128-user realty team.',
     purpose:
       'A full-featured real estate platform automating tranche generation, commission calculations, and receivables tracking. Deployed to 128 users at Inner SPARC Realty, boosting operational efficiency by 30%.',
@@ -41,7 +42,8 @@ export const featuredProjects: Project[] = [
     id: 'unwnd-cafe',
     title: 'unwnd.cafe',
     category: 'engineering',
-    type: 'professional',
+    type: 'external',
+    liveUrl: 'https://unwnd-cafe.vercel.app/',
     tagline: 'A calm café storefront with its own in-house POS.',
     purpose:
       'A full-stack café platform, not just a website — pairing a serene, content-managed storefront (Sanity CMS, online ordering) with a dedicated in-house POS system for staff to manage orders and daily operations.',
@@ -58,7 +60,7 @@ export const featuredProjects: Project[] = [
     id: 'leads-management-system',
     title: 'Leads Management System',
     category: 'engineering',
-    type: 'professional',
+    type: 'internal',
     tagline: "A realty team's leads, pipeline and listings in one place.",
     purpose:
       'A lead monitoring system for Inner SPARC Realty Corporation, centralizing client tracking, sales progress monitoring, and property listings to help agents manage the full sales pipeline in one place.',
@@ -75,6 +77,7 @@ export const featuredProjects: Project[] = [
     title: 'Maneho.ai',
     category: 'engineering',
     type: 'personal',
+    liveUrl: 'https://maneho-ai.web.app/',
     tagline: 'An AI assistant that reads your traffic citation and explains the law.',
     purpose:
       'An AI-powered legal traffic assistant that decodes uploaded citations using Cloud Vision OCR and delivers context-aware legal reasoning powered by Gemini LLMs and Vertex AI vector search.',
@@ -91,6 +94,7 @@ export const featuredProjects: Project[] = [
     title: 'Flux — Fitness Tracker',
     category: 'engineering',
     type: 'personal',
+    liveUrl: 'https://flux-59eeb.web.app/',
     tagline: 'Log workouts, track progress and see your health data.',
     purpose:
       'A comprehensive health-tracking web application managing both frontend and backend environments, enabling users to log workouts, monitor progress, and visualize health data.',
@@ -108,8 +112,9 @@ export const featuredProjects: Project[] = [
     id: 'cadpractice',
     title: 'CADpractice',
     category: 'qa',
-    type: 'professional',
-    tagline: 'QA for a gamified CAD training platform for STEM educators.',
+    type: 'external',
+    liveUrl: 'https://www.cadpractice.com/',
+    tagline: 'A gamified CAD training platform for STEM educators.',
     purpose:
       'A gamified CAD training platform for STEM educators featuring a growing library of professional 3D modeling challenges. Tested the automated validation engine, instant feedback system, and real-time skills tracking across multiple difficulty levels.',
     role: 'QA Engineer',
@@ -125,8 +130,9 @@ export const featuredProjects: Project[] = [
     id: 'switchboard',
     title: 'Switchboard',
     category: 'qa',
-    type: 'professional',
-    tagline: "QA for an AI project manager's chat, sprint health and blocker detection.",
+    type: 'external',
+    liveUrl: 'https://www.switchboardpm.ai/',
+    tagline: 'An AI project manager with chat, sprint health and blocker detection.',
     purpose:
       'An AI-powered project management platform for connecting, routing, and shipping software teams. Tested AI chat context handling, sprint health tracking, blocker detection, and multi-project scoping across user roles.',
     role: 'QA Engineer',
@@ -142,8 +148,8 @@ export const featuredProjects: Project[] = [
     id: 'tms',
     title: 'Talent Management System',
     category: 'qa',
-    type: 'professional',
-    tagline: "QA for an HR platform's access roles, skills workflows and payroll.",
+    type: 'internal',
+    tagline: 'An HR platform for access roles, skills workflows and payroll.',
     purpose:
       'A comprehensive HR platform managing attendance, skills taxonomy, gap analysis, and payroll for organizations. Validated role-based access controls, skills competency workflows, leaderboard logic, and data integrity across all modules.',
     role: 'QA Engineer',
@@ -158,8 +164,9 @@ export const featuredProjects: Project[] = [
     id: 'mythica',
     title: 'Mythica',
     category: 'qa',
-    type: 'professional',
-    tagline: 'QA for a mythology magazine across browsers, phones and screen readers.',
+    type: 'external',
+    liveUrl: 'https://exploremythica.org/',
+    tagline: 'A mythology magazine exploring gods, heroes and legends.',
     purpose:
       'An editorial platform exploring gods, heroes, and legends across world mythologies. Conducted end-to-end testing of content navigation, cross-browser compatibility, responsive layouts, and accessibility across desktop and mobile viewports.',
     role: 'QA Engineer',
@@ -174,8 +181,9 @@ export const featuredProjects: Project[] = [
     id: 'reviva',
     title: 'Reviva',
     category: 'qa',
-    type: 'professional',
-    tagline: 'End-to-end QA for a recovery and wellness platform.',
+    type: 'external',
+    liveUrl: 'https://reviva-dev-9b77d.web.app/',
+    tagline: 'A wellness platform supporting recovery and lifestyle improvement.',
     purpose:
       'A health and wellness platform designed to support recovery and lifestyle improvement. Conducted functional testing, regression testing, and end-to-end validation across core user flows and features.',
     role: 'QA Engineer',

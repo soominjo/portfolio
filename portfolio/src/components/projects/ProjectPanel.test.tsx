@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { titleSizeClass } from './panelText'
+import { metaLine, titleSizeClass } from './panelText'
 import { ProjectPanel } from './ProjectPanel'
 import { ENGINEERING_PROJECT, QA_PROJECT } from './testProjects'
 
@@ -37,7 +37,7 @@ describe('ProjectPanel', () => {
     renderPanel()
     expect(screen.getByText('01')).toBeInTheDocument()
     expect(screen.getByText('/ 11')).toBeInTheDocument()
-    expect(screen.getByText('Professional · Full-Stack Developer')).toBeInTheDocument()
+    expect(screen.getByText('External Project · Full-Stack Developer')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 3, name: 'Flinki' })).toBeInTheDocument()
     expect(screen.getByText(ENGINEERING_PROJECT.tagline)).toBeInTheDocument()
   })
@@ -51,7 +51,7 @@ describe('ProjectPanel', () => {
     renderPanel({ project: QA_PROJECT })
     expect(screen.queryByRole('img')).toBeNull()
     expect(screen.getByText('Manual Testing')).toBeInTheDocument()
-    expect(screen.getByText('Personal · QA Engineer')).toBeInTheDocument()
+    expect(screen.getByText('Personal Project · QA Engineer')).toBeInTheDocument()
   })
 
   it('marks whether it is the active panel', () => {
@@ -75,6 +75,31 @@ describe('ProjectPanel', () => {
     const { onOpenDetails } = renderPanel()
     fireEvent.click(screen.getByRole('button', { name: 'View more about Flinki' }))
     expect(onOpenDetails).toHaveBeenCalledWith(ENGINEERING_PROJECT)
+  })
+
+  it('links to the live site in a new tab', () => {
+    renderPanel()
+    const link = screen.getByRole('link', { name: 'Visit site for Flinki (opens in a new tab)' })
+    expect(link).toHaveAttribute('href', 'https://flinki.co/')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('shows no site link for a project without a live site', () => {
+    renderPanel({ project: QA_PROJECT })
+    expect(screen.queryByRole('link')).toBeNull()
+  })
+
+  it('clears a highlighted logo when the panel stops being the active one', () => {
+    const props = { project: ENGINEERING_PROJECT, index: 0, total: 11, onOpenDetails: vi.fn(), onFocusInactive: vi.fn() }
+    const { rerender } = render(<ProjectPanel {...props} active />)
+    const react = document.querySelector('[data-skill="React"]') as HTMLElement
+    fireEvent.pointerEnter(react, { pointerType: 'mouse' })
+    expect(react).toHaveAttribute('data-state', 'active')
+
+    rerender(<ProjectPanel {...props} active={false} />)
+
+    expect(react).toHaveAttribute('data-state', 'rest')
   })
 
   it('gives the title its size class', () => {
@@ -103,6 +128,16 @@ describe('ProjectPanel', () => {
     const heading = screen.getByRole('heading', { level: 3 })
     expect(heading.className).toContain(titleSizeClass('Flinki', 'compact'))
     expect(heading.className).not.toContain(titleSizeClass('Flinki', 'regular'))
+  })
+})
+
+describe('metaLine', () => {
+  it.each([
+    ['internal', 'Internal System · Full-Stack Developer'],
+    ['external', 'External Project · Full-Stack Developer'],
+    ['personal', 'Personal Project · Full-Stack Developer'],
+  ] as const)('labels the %s type', (type, line) => {
+    expect(metaLine({ type, role: 'Full-Stack Developer' })).toBe(line)
   })
 })
 
