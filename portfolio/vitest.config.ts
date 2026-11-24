@@ -7,6 +7,9 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',
       setupFiles: ['./src/test/setup.ts'],
+      // Vitest blanks CSS by default. Raw imports keep their text, so tests
+      // can check that index.css agrees with the code (see cursorRules.test.ts).
+      css: { include: [/\.css\?raw$/] },
       coverage: {
         provider: 'v8',
         include: [
@@ -24,6 +27,8 @@ export default mergeConfig(
           'src/components/sections/Projects.tsx',
           'src/components/chat/**',
           'src/components/Chatbot.tsx',
+          'src/components/cursor/**',
+          'src/hooks/useMediaQuery.ts',
         ],
         thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 },
       },

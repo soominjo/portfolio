@@ -6,6 +6,7 @@ import { About } from './components/sections/About'
 import { Projects } from './components/sections/Projects'
 import { Contact } from './components/sections/Contact'
 import { Chatbot } from './components/Chatbot'
+import { RocketCursor } from './components/cursor/RocketCursor'
 import { Resume } from './components/Resume'
 
 function App() {
@@ -21,13 +22,14 @@ function App() {
 
       <main>
         <Hero theme={theme} />
+        <Projects theme={theme} />
         <About />
-        <Projects />
         <Contact />
       </main>
 
       <Footer />
       <Chatbot />
+      <RocketCursor theme={theme} />
     </div>
   )
 }

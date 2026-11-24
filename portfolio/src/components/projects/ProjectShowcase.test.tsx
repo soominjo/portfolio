@@ -18,6 +18,22 @@ vi.mock('../three/devices/DeviceStage', () => ({
   },
 }))
 
+interface BackdropProps {
+  projectId: string | undefined
+  theme: string
+  reduceMotion: boolean
+  cellRef: { current: HTMLElement | null }
+}
+const backdrop = vi.hoisted(() => ({ props: null as BackdropProps | null }))
+
+// The real backdrop needs a 2D canvas; this stand-in records what it was given.
+vi.mock('./backdrops/ProjectBackdrop', () => ({
+  ProjectBackdrop: (props: BackdropProps) => {
+    backdrop.props = props
+    return <div data-testid="project-backdrop" />
+  },
+}))
+
 const CMS: Project = { ...ENGINEERING_PROJECT, id: 'cms', title: 'Commission Monitoring System', showPhone: false, order: 2 }
 const TMS: Project = { ...QA_PROJECT, id: 'tms', title: 'Talent Management System', order: 3 }
 const MYTHICA: Project = { ...QA_PROJECT, id: 'mythica', title: 'Mythica', order: 4 }
@@ -48,6 +64,7 @@ describe('ProjectShowcase', () => {
   beforeEach(() => {
     scrollIntoView.mockClear()
     stage.props = null
+    backdrop.props = null
   })
 
   it('renders every project as an article, in showcase order', () => {
@@ -66,6 +83,25 @@ describe('ProjectShowcase', () => {
   it('starts on the first project', () => {
     render(<ProjectShowcase projects={PROJECTS} />)
     expect(article('Flinki')).toHaveAttribute('data-active', 'true')
+  })
+
+  it("draws the active project's backdrop behind the devices, in the current theme", async () => {
+    render(<ProjectShowcase projects={PROJECTS} theme="light" />)
+    const drawn = await screen.findByTestId('project-backdrop')
+    const cell = screen.getByTestId('device-cell')
+    expect(backdrop.props?.projectId).toBe(ENGINEERING_PROJECT.id)
+    expect(backdrop.props?.theme).toBe('light')
+    expect(backdrop.props?.reduceMotion).toBe(false)
+    expect(backdrop.props?.cellRef.current).toBe(cell)
+    expect(drawn.compareDocumentPosition(cell) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('keeps the backdrop still under reduced motion', async () => {
+    reducedMotion.value = true
+    render(<ProjectShowcase projects={PROJECTS} />)
+    await screen.findByTestId('project-backdrop')
+    expect(backdrop.props?.reduceMotion).toBe(true)
+    expect(backdrop.props?.theme).toBe('dark')
   })
 
   it('scrolls smoothly to a project from the progress bar', () => {

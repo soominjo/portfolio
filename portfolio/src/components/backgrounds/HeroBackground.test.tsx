@@ -23,28 +23,30 @@ describe('HeroBackground', () => {
     vi.restoreAllMocks()
   })
 
-  it('shows the sphere and no picker outside the lab, whatever the URL says', () => {
-    visit('?bg=galaxy')
+  it('shows the galaxy and no picker outside the lab, whatever the URL says', () => {
+    visit('?bg=sphere')
     render(<HeroBackground theme="dark" labEnabled={false} />)
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'sphere')
+    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'galaxy')
     expect(screen.queryByRole('group', { name: 'Hero background' })).not.toBeInTheDocument()
   })
 
   it('opens on the background named in the URL', () => {
-    visit('?bg=galaxy')
+    visit('?bg=sphere')
     render(<HeroBackground theme="dark" labEnabled />)
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'galaxy')
-    expect(screen.getByRole('button', { name: 'Galaxy' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'sphere')
+    expect(screen.getByRole('button', { name: 'Sphere' })).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('switches background and keeps the choice in the URL', () => {
     render(<HeroBackground theme="dark" labEnabled />)
+    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'galaxy')
+
     fireEvent.click(screen.getByRole('button', { name: 'Orb' }))
     expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'orb')
     expect(window.location.search).toBe('?bg=orb')
 
-    fireEvent.click(screen.getByRole('button', { name: 'Sphere' }))
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'sphere')
+    fireEvent.click(screen.getByRole('button', { name: 'Galaxy' }))
+    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'galaxy')
     expect(window.location.search).toBe('')
   })
 
@@ -63,7 +65,7 @@ describe('HeroBackground', () => {
     render(<HeroBackground theme="dark" labEnabled />)
     expect(screen.queryByTestId('background')).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Galaxy' }))
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'galaxy')
+    fireEvent.click(screen.getByRole('button', { name: 'Sphere' }))
+    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'sphere')
   })
 })

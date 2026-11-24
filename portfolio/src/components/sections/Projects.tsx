@@ -1,8 +1,14 @@
 import { motion } from 'framer-motion'
 import { useProjects } from '../../hooks/useProjects'
+import type { Theme } from '../../hooks/useTheme'
 import { ProjectShowcase } from '../projects/ProjectShowcase'
 
-export function Projects() {
+interface ProjectsProps {
+  /** Picks each project's backdrop colours. */
+  readonly theme?: Theme
+}
+
+export function Projects({ theme = 'dark' }: ProjectsProps) {
   const { projects } = useProjects()
 
   return (
@@ -30,7 +36,7 @@ export function Projects() {
         </motion.div>
       </div>
 
-      <ProjectShowcase projects={projects} />
+      <ProjectShowcase projects={projects} theme={theme} />
     </section>
   )
 }

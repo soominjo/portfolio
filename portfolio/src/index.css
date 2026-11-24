@@ -438,3 +438,28 @@
     animation: none;
   }
 }
+
+/* Rocket cursor. RocketCursor.tsx puts .rocket-cursor on <html>, and the
+   selectors and media query here are mirrored in components/cursor/cursorRules.ts.
+   The rocket is a real cursor image, so it never lags and still shows over the
+   project dialog in the top layer. Its nose (6, 6) is the click point. It's for
+   mouse and trackpad only; Windows high-contrast mode keeps the system cursors.
+   Over links and buttons the engine is lit, and text fields keep the I-beam.
+   The plain url() line is the fallback for browsers without image-set() here.
+   Source art: assets/cursors/*.svg. */
+@media (hover: hover) and (pointer: fine) and (forced-colors: none) {
+  html.rocket-cursor,
+  html.rocket-cursor dialog::backdrop {
+    cursor: url('./assets/cursors/rocket.png') 6 6, auto;
+    cursor: image-set(url('./assets/cursors/rocket.png') 1x, url('./assets/cursors/rocket@2x.png') 2x) 6 6, auto;
+  }
+
+  html.rocket-cursor :is(a[href], button, input[type='button'], input[type='submit'], input[type='reset'], [role='button'], summary, label[for], select, .cursor-pointer):not(:disabled) {
+    cursor: url('./assets/cursors/rocket-lit.png') 6 6, pointer;
+    cursor: image-set(url('./assets/cursors/rocket-lit.png') 1x, url('./assets/cursors/rocket-lit@2x.png') 2x) 6 6, pointer;
+  }
+
+  html.rocket-cursor :is(input:not([type='button'], [type='submit'], [type='reset'], [type='checkbox'], [type='radio'], [type='range'], [type='color'], [type='file'], [type='image'], [type='hidden']), textarea, [contenteditable]:not([contenteditable='false'])) {
+    cursor: text;
+  }
+}

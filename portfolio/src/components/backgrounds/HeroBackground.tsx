@@ -14,7 +14,7 @@ interface HeroBackgroundProps {
 }
 
 /**
- * The hero's WebGL layer. Production always shows the displacement sphere.
+ * The hero's WebGL layer. Production always shows the galaxy.
  * In the lab (dev, or a VITE_BG_LAB=1 preview) a picker swaps in the other
  * candidates. Each one is decorative, so a failure only removes it, and the
  * boundary resets when you switch.

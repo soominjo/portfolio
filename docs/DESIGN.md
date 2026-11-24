@@ -205,10 +205,30 @@ The Projects section is a pinned scroll through every project, engineering first
   - **Finishes:** `silver`, `black` or `white`, set by `deviceFinish`, tweening between projects. Neighbouring projects never share one.
   - **Motion:** the lid swings open and the phone springs up the first time the stage is in view, and the devices lean toward the cursor. When a project has no phone, the laptop slides to the centre.
   - **No WebGL:** the desktop screenshot shows on its own.
-- **Background:** concentric indigo rings and a soft glow centred on the devices (`StageBackground`), fainter in the light theme.
+- **Background:** each project has its own faint animated scene behind the devices (`backdrops/`), in colours taken from its screenshot. Scenes and palettes live in `backdrops/projectBackdrops.ts`:
+
+  | Project | Scene |
+  |---|---|
+  | Flinki | pose-tracking skeletons |
+  | Commission Monitoring | a ledger with a rising chart |
+  | unwnd.cafe | steam over warm light |
+  | Leads | a map with listing pins |
+  | Maneho.ai | an OCR scan of a ticket |
+  | Flux | a heart monitor |
+  | CADpractice | a blueprint |
+  | Switchboard | circuit traces with pulses |
+  | Talent Management | skill hexagons |
+  | Mythica | constellations |
+  | Reviva | an aurora |
+
+  - **Placement:** scenes draw on a 1440 × 900 virtual stage. It is centred on the device cell and sized to match the 3D framing.
+  - **Fade:** each scene fades out the way the old rings did: solid to 15% of the distance to the farthest corner, gone by 65%. Stacked layouts also fade it across the bottom of the device cell, so the text stays clean.
+  - **Switching:** the scene cross-fades over 700 ms between projects.
+  - **Cost:** two stacked 2D canvases, lazy-loaded inside `DecorativeBoundary`, drawing at most 30 frames a second. Parts that don't move are cached, and the scene pauses while off screen.
+  - **Fallback:** the CSS rings and glow (`StageBackground`) stay underneath. They show for projects without a scene, in browsers without a 2D canvas, and on screens too short for the devices.
 - **Progress:** a segmented bar at the bottom of the stage, grouped Engineering / QA Engineering, with the current segment in cyan. Clicking a segment jumps to that project. It is a mouse shortcut, so it is `aria-hidden` and out of the tab order.
 - **View more:** a native `<dialog>` with the full description, the whole stack as tech badges, and the screenshots. It has no demo links.
-- **Reduced motion:** no intro, no lean, and instant screen and finish changes; jumps skip smooth scrolling. The stage still pins.
+- **Reduced motion:** no intro, no lean, and instant screen and finish changes; jumps skip smooth scrolling. The backdrop shows each scene as a still, finished frame and switches without the cross-fade. The stage still pins.
 - **Screenshots:** WebP files in `public/projects/`, with desktop shots 1440px wide. A 16:10 capture (for example 1440×900) fills the laptop screen without any crop.
 
 ### Chatbot (orb + holo terminal)
@@ -226,6 +246,23 @@ The AI chat is a living orb in the bottom-right corner that opens a HUD-style te
 - **Keys:** three suggested questions ("What does Gens build?", "AI experience?", "Open to work?") are 3D keycaps that press down. Each disappears once asked, and they lock while waiting. Send is a `⏎ Enter` keycap.
 - **Focus:** the input gets focus 150ms after opening, unless the chat is already closing. Escape and [×] close it and return focus to the orb.
 - **Reduced motion:** a still orb, a fade instead of the swing, no scan band or caret blink, and replies appear at once.
+
+### Rocket Cursor (`src/components/cursor/`)
+The site cursor is a small rocket pointing up-left. Its nose is the click point.
+- **Cursor image:** a real CSS cursor, not a drawn element, so it never lags and still shows over the project dialog in the top layer. The rules sit at the end of `index.css` and apply once `RocketCursor` puts `.rocket-cursor` on `<html>`. The portfolio page has it and `/resume` doesn't.
+  - The art is 32px (`assets/cursors/rocket.svg`), shipped as 1x and 2x PNGs through `image-set()` with a plain `url()` fallback. The nose (6, 6) is the hotspot. Cursors stay at 32px or below, because browsers drop larger ones near their own UI.
+  - Links, buttons, labels and `.cursor-pointer` show `rocket-lit`, the same rocket with a cyan flame. Text fields keep the I-beam, and disabled controls keep their own cursor.
+  - It applies to mouse and trackpad only (`(hover: hover) and (pointer: fine)`). Touch is untouched, and Windows high-contrast mode (`forced-colors: active`) keeps the system cursors.
+- **Exhaust:** a click-through, full-window canvas (`z-100`, `aria-hidden`) draws puffs from the nozzle, 16px right and below the nose.
+  - Puffs cool from white-hot through cyan to indigo and fade within about half a second. On the light page they are deeper cyan and indigo with normal blending, since additive glow would vanish.
+  - The engine burns denser over links and buttons, and a click fires a boost.
+  - There's no exhaust over text fields, over the page scrollbars, or inside the open project dialog, which sits above the canvas.
+  - The canvas is sized to its own box, so a classic scrollbar doesn't stretch it.
+  - It's hidden and asks for no frames while there are no puffs.
+  - The lit rocket image is fetched up front, so the first hover over a link doesn't flash the system hand.
+- **Reduced motion:** the rocket stays but there is no exhaust.
+- **Keeping CSS and code in step:** `cursorRules.ts` mirrors the selectors and media query from `index.css`, and `cursorRules.test.ts` fails if they drift.
+- **Editing the art:** re-export both PNGs from the SVG after editing it. Vite keeps the PNGs out of the stylesheet (`assetsInlineLimit` in `vite.config.ts`), so they never block first paint.
 
 ### Gradient Blobs (decorative)
 ```tsx
@@ -267,12 +304,6 @@ viewport={{ once: true, margin: '-60px' }}
 transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
 ```
 
-### Scroll Indicator
-```tsx
-animate={{ y: [0, 10, 0] }}
-transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-```
-
 ### Mobile Menu
 ```tsx
 initial={{ opacity: 0, height: 0 }}
@@ -296,8 +327,17 @@ exit={{ opacity: 0, height: 0 }}
 - Screen readers hear the whole list once ("A, B, C, and D"), not a new word every few seconds.
 - Reduced motion: first word only, with no rotation and no wipe.
 
-### Displacement Sphere (hero background)
-- A three.js noise-displaced sphere, lazy-loaded in its own chunk (`React.lazy`) so it never delays first paint.
+### Galaxy (hero background)
+- React Bits' Galaxy, a self-contained WebGL2 star field, lazy-loaded in its own chunk (`React.lazy`) inside `DecorativeBoundary`, so it never delays first paint and a failure only removes it.
+- Stars use the site palette (`#818cf8`, `#22d3ee`, `#6366f1`) and draw see-through over the grid and the gradient blobs. On the light theme they turn to ink-tinted stars.
+- They warp in over about 2 s, then drift toward the viewer while the field turns slowly. The cursor pushes nearby stars aside, and a click inside the hero sets off a short warp.
+- It pauses while off-screen or in a hidden tab. Reduced motion shows a still star field with no intro, drift or warp.
+- The dev background lab (`?bg=`, on in dev and in `VITE_BG_LAB=1` builds) still offers the displacement sphere and the other candidates.
+
+Adapted from React Bits (MIT + Commons Clause). See `portfolio/THIRD_PARTY_NOTICES.md`.
+
+### Displacement Sphere (lab alternative)
+- A three.js noise-displaced sphere, lazy-loaded in its own chunk (`React.lazy`) so it never delays first paint. Production shows the galaxy instead; the sphere is `?bg=sphere` in the lab, and the chat orb reuses its shader.
 - The shader colours it indigo → cyan (`#6366f1` / `#22d3ee`), and it fades in to 85% opacity over 3 s.
 - It leans toward the cursor on a spring (`stiffness 30, damping 20, mass 2`), and its lighting follows the theme.
 - It pauses while off-screen, draws one still frame under reduced motion, and renders nothing when WebGL is unavailable.
@@ -314,7 +354,7 @@ Adapted from Hamish Williams' portfolio (MIT). See `portfolio/THIRD_PARTY_NOTICE
 - Scroll behavior: `scroll-smooth` on `html`
 - `min-h-screen` for hero section
 - Don't combine `desk:` and `lg:` on the same property. Tailwind emits custom variants after the breakpoint variants, so `desk:` always wins.
-- Hero: two lines only, left-aligned inside a centred column using hamishw.com's intro widths (780px, 920px above 1680px, 1024px above 2080px). The block is vertically centred and nudged up: 8vh on phones, 24px on desktop. On desktop, equal `desk:px-32` side padding keeps the column clear of the side nav and truly centred. The scroll indicator lines up with the column's left edge. Line one is the name on one line, as decoder text. It's white plus a glowing `text-indigo-400` surname in dark, and slate-900 plus `light:text-indigo-600` in light, which keeps the surname above 3:1 contrast. Line two is the rotating role. Under reduced motion the entrance is a plain fade (no slide) and the scroll dot stays still. A bottom gradient melts the sphere into the page colour. The portrait is paused for now; the cut-out photo is kept in `src/assets/portrait*.webp` for later.
+- Hero: two lines only, left-aligned inside a centred column using hamishw.com's intro widths (780px, 920px above 1680px, 1024px above 2080px). The block is vertically centred and nudged up: 8vh on phones, 24px on desktop. On desktop, equal `desk:px-32` side padding keeps the column clear of the side nav and truly centred. Line one is the name on one line, as decoder text. It's white plus a glowing `text-indigo-400` surname in dark, and slate-900 plus `light:text-indigo-600` in light, which keeps the surname above 3:1 contrast. Line two is the rotating role. Under reduced motion the entrance is a plain fade (no slide). There is no scroll-down hint. A bottom gradient melts the galaxy into the page colour. The portrait is paused for now; the cut-out photo is kept in `src/assets/portrait*.webp` for later.
 
 ---
 

@@ -1,6 +1,7 @@
 import { useReducedMotion } from 'framer-motion'
-import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useMemo, useRef, useState } from 'react'
 import type { Project } from '../../../../shared/types/project'
+import type { Theme } from '../../hooks/useTheme'
 import { DecorativeBoundary } from '../DecorativeBoundary'
 import { toDeviceSlide } from './deviceSlides'
 import { ProgressRail } from './ProgressRail'
@@ -15,6 +16,8 @@ import { useViewportFit, type ViewportFit } from './useViewportFit'
 
 // three.js is heavy, so the devices arrive in their own chunk.
 const DeviceStage = lazy(() => import('../three/devices/DeviceStage'))
+// The backdrop scenes are decorative too; the plain rings show until they load.
+const ProjectBackdrop = lazy(() => import('./backdrops/ProjectBackdrop').then((module) => ({ default: module.ProjectBackdrop })))
 
 export const STEP_PREFIX = 'project-step-'
 
@@ -26,6 +29,8 @@ const RAIL_PLACEMENT: Readonly<Record<ViewportFit, string>> = { regular: 'bottom
 
 interface ProjectShowcaseProps {
   readonly projects: readonly Project[]
+  /** Picks each project's backdrop colours. */
+  readonly theme?: Theme
 }
 
 /** One invisible step per project, pulled up under the stage. */
@@ -44,7 +49,7 @@ function ScrollSteps({ stepIds }: { readonly stepIds: readonly string[] }) {
  * invisible step per project scrolls past behind it, and the step crossing
  * the middle of the viewport picks the project on show.
  */
-export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
+export function ProjectShowcase({ projects, theme = 'dark' }: ProjectShowcaseProps) {
   const ordered = useMemo(() => orderForShowcase(projects), [projects])
   const groups = useMemo(() => groupShowcase(ordered), [ordered])
   const slides = useMemo(() => ordered.map(toDeviceSlide), [ordered])
@@ -54,6 +59,7 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
   const fit = useViewportFit()
   const reduceMotion = useReducedMotion() ?? false
   const [details, setDetails] = useState<Project | null>(null)
+  const cellRef = useRef<HTMLDivElement>(null)
 
   const scrollToStep = useCallback(
     (index: number, behavior: ScrollBehavior) => {
@@ -71,10 +77,15 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
     <div className="relative">
       <div className="sticky top-0 h-svh overflow-hidden">
         <StageBackground />
+        <DecorativeBoundary>
+          <Suspense fallback={null}>
+            <ProjectBackdrop projectId={ordered[active]?.id} theme={theme} reduceMotion={reduceMotion} cellRef={cellRef} />
+          </Suspense>
+        </DecorativeBoundary>
         <div
           className={`clear-side-nav relative mx-auto flex h-full max-w-[88rem] flex-col px-6 pt-16 desk:pt-0 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-8 lg:pb-0 ${STAGE_PADDING[fit]}`}
         >
-          <div data-testid="device-cell" className={`relative order-1 shrink-0 lg:order-2 lg:h-[78%] ${DEVICE_CELL[fit]}`}>
+          <div ref={cellRef} data-testid="device-cell" className={`relative order-1 shrink-0 lg:order-2 lg:h-[78%] ${DEVICE_CELL[fit]}`}>
             <DecorativeBoundary>
               <Suspense fallback={null}>
                 <DeviceStage

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Rocket cursor. Source art for rocket.png (32px) and rocket@2x.png (64px);
+       re-export both after editing. It points up-left: the nose tip at (6, 6)
+       is the click point, and the nozzle sits at (22, 22). -->
+  <g transform="rotate(-45 16 16)" stroke="#05070f" stroke-linejoin="round">
+    <path d="M11.2 14.6 L6.9 20.6 L6.9 24 L11.2 21.7 Z" fill="#6366f1" stroke-width="1.2" />
+    <path d="M20.8 14.6 L25.1 20.6 L25.1 24 L20.8 21.7 Z" fill="#6366f1" stroke-width="1.2" />
+    <path d="M16 1.6 C20.6 5.3 21.4 11 21 17.5 L20.8 22.6 L11.2 22.6 L11 17.5 C10.6 11 11.4 5.3 16 1.6 Z" fill="#e2e8f0" stroke-width="1.2" />
+    <circle cx="16" cy="10.6" r="2.6" fill="#22d3ee" stroke-width="1.1" />
+    <path d="M13 22.6 L19 22.6 L18.2 24.6 L13.8 24.6 Z" fill="#64748b" stroke-width="1" />
+  </g>
+</svg>

@@ -18,10 +18,10 @@ function renderWithPage() {
     <div>
       <Navbar theme="dark" onToggleTheme={vi.fn()} />
       <main data-testid="page">
+        <section id="projects" />
         <section id="about">
           <div id="experience" />
         </section>
-        <section id="projects" />
         <section id="contact" />
       </main>
       <footer data-testid="footer" />
@@ -31,9 +31,9 @@ function renderWithPage() {
 }
 
 const SECTIONS = [
+  ['Projects', '#projects'],
   ['About', '#about'],
   ['Experience', '#experience'],
-  ['Projects', '#projects'],
   ['Contact', '#contact'],
 ] as const
 
