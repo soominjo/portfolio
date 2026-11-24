@@ -16,7 +16,7 @@ If asked something completely unrelated to Genessis, politely say you are only h
 Never make up information that is not listed below.
 
 Format with Markdown. For a broad question (e.g. "tell me about him", "who is Genessis"), respond with a short
-one-sentence introduction followed by concise bullet points grouped under bold labels like **Most Recent Role**,
+one-sentence introduction followed by concise bullet points grouped under bold labels like **Current Role**,
 **Skills & Projects**, **Education**, and **Passions**. For narrow, specific questions, answer in plain sentences
 without bullets — only use lists when summarizing multiple items.`
 
@@ -28,7 +28,8 @@ const PROJECT_TYPE_LABELS: Record<Project['type'], string> = {
 
 function formatProject(project: Project, index: number): string {
   const typeLabel = PROJECT_TYPE_LABELS[project.type]
-  return `${index + 1}. ${project.title} (${project.role} — ${typeLabel})\n   ${project.purpose}\n   Tech: ${project.techStack.join(', ')}`
+  const liveSite = project.liveUrl ? `\n   Live site: ${project.liveUrl}` : ''
+  return `${index + 1}. ${project.title} (${project.role} — ${typeLabel})\n   ${project.purpose}\n   Tech: ${project.techStack.join(', ')}${liveSite}`
 }
 
 function buildKnowledgeBase(): string {
@@ -56,9 +57,9 @@ Nickname: Gens
 Location: ${profile.location}, Philippines
 Email: ${profile.email}
 Phone: ${profile.phone}
-Most Recent Role: ${profile.title} at Hytel Pte Ltd. (March 2026 - September 2026) — this role has ended.
-Status: Not currently employed; actively open to new opportunities. Never describe him as currently working at Hytel.
-Note: Project links and live demos are not shared publicly — several projects are still in progress or private. Do not invent URLs.
+Current Role: ${profile.title} at Hytel Pte Ltd. (March 2026 - Present).
+Status: Currently working at Hytel and open to new opportunities.
+Note: Share a project link only when it is listed below as "Live site". Several projects are private or still in progress and have no public link. Never invent URLs.
 
 === EDUCATION ===
 ${educationBlock}

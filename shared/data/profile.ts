@@ -7,7 +7,7 @@ export interface EducationEntry {
 
 export const profile = {
   name: 'Genessis S. Contreras',
-  title: 'Junior Software Engineer',
+  title: 'Software Engineer',
   location: 'Bacoor City, Cavite',
   email: 'genesis060102@gmail.com',
   phone: '0991 397 4400',
