@@ -3,16 +3,17 @@ import type { Experience } from '../types/experience'
 export const experience: Experience[] = [
   {
     id: 'hytel',
-    year: 'March 2026 - September 2026',
-    role: 'Junior Software Engineer',
+    year: 'March 2026 - Present',
+    role: 'Software Engineer',
     company: 'Hytel Pte Ltd.',
-    current: false,
+    current: true,
     highlights: [
-      'Collaborated cross-functionally — partnered with product managers, designers, and backend developers to scope, build, and ship frontend and backend features for a mobile-first platform, delivering React web interfaces and Flutter/Dart mobile screens backed by Node and Firestore/Cloud SQL.',
-      'Engineered RAG systems & AI integrations — built Retrieval-Augmented Generation pipelines by chunking and vectorizing LTO regulatory documents to power a traffic-law AI assistant, and shipped an AI-powered "fine ticket decoder" that analyzes uploaded citations via computer vision.',
-      'Drove quality across enterprise projects — started in cross-functional QA, tracking and triaging bugs through proprietary ticketing software and hardening CI/CD pipelines, before transitioning into full-stack engineering.',
+      'Won Hytel its largest project — built the winning prototype in a multi-firm pitch for the next version of Flinki, capturing exactly what the client wanted.',
+      "Built Flinki's web and mobile frontend — React and Flutter across the whole product, plus Node backend work, alongside product managers, designers and fellow developers in the Philippines and Zambia.",
+      'Integrated payments, wearables and events — connected Stripe, wearable devices and third-party event platforms, and cleaned up the codebase to cut tech debt.',
+      'Engineered AI features with RAG and computer vision — a traffic-law assistant grounded in chunked, vectorized LTO regulations, and a fine-ticket decoder that reads uploaded citations.',
     ],
-    techStack: ['React', 'Node.js', 'Firebase / Firestore', 'MySQL / Cloud SQL', 'Flutter', 'Dart', 'RAG Pipelines', 'LLM Integration', 'CI/CD'],
+    techStack: ['React', 'TypeScript', 'Flutter', 'Dart', 'Node.js', 'Firebase / Firestore', 'MySQL / Cloud SQL', 'Stripe', 'RAG Pipelines', 'LLM Integration', 'CI/CD'],
   },
   {
     id: 'inner-sparc-realty',
