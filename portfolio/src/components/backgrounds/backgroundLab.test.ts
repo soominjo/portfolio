@@ -8,9 +8,9 @@ import {
 } from './backgroundLab'
 
 describe('BACKGROUND_OPTIONS', () => {
-  it('starts with the galaxy, which is the default', () => {
-    expect(BACKGROUND_OPTIONS[0].id).toBe('galaxy')
-    expect(DEFAULT_BACKGROUND).toBe('galaxy')
+  it('starts with the particles, which are the default', () => {
+    expect(BACKGROUND_OPTIONS[0].id).toBe('particles')
+    expect(DEFAULT_BACKGROUND).toBe('particles')
   })
 
   it('has unique ids', () => {
@@ -25,21 +25,21 @@ describe('parseBackgroundId', () => {
     expect(parseBackgroundId('?utm=x&bg=grid-scan')).toBe('grid-scan')
   })
 
-  it('falls back to the galaxy when the param is missing or unknown', () => {
-    expect(parseBackgroundId('')).toBe('galaxy')
-    expect(parseBackgroundId('?bg=nope')).toBe('galaxy')
+  it('falls back to the particles when the param is missing or unknown', () => {
+    expect(parseBackgroundId('')).toBe('particles')
+    expect(parseBackgroundId('?bg=nope')).toBe('particles')
   })
 })
 
 describe('withBackgroundParam', () => {
   it('sets the background and keeps other params', () => {
     expect(withBackgroundParam('?utm=x', 'sphere')).toBe('?utm=x&bg=sphere')
-    expect(withBackgroundParam('?bg=orb', 'particles')).toBe('?bg=particles')
+    expect(withBackgroundParam('?bg=orb', 'galaxy')).toBe('?bg=galaxy')
   })
 
   it('drops the param for the default background', () => {
-    expect(withBackgroundParam('?bg=sphere&utm=x', 'galaxy')).toBe('?utm=x')
-    expect(withBackgroundParam('?bg=sphere', 'galaxy')).toBe('')
+    expect(withBackgroundParam('?bg=sphere&utm=x', 'particles')).toBe('?utm=x')
+    expect(withBackgroundParam('?bg=sphere', 'particles')).toBe('')
   })
 })
 

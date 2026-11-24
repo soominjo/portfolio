@@ -31,6 +31,15 @@ describe('ProjectDetailsDialog', () => {
     expect(screen.queryByAltText('Reviva on mobile')).toBeNull()
   })
 
+  it('links to the live site only when there is one', () => {
+    const { rerender } = render(<ProjectDetailsDialog project={ENGINEERING_PROJECT} onClose={vi.fn()} />)
+    const link = screen.getByRole('link', { name: 'Visit site for Flinki (opens in a new tab)' })
+    expect(link).toHaveAttribute('href', 'https://flinki.co/')
+    expect(link).toHaveAttribute('target', '_blank')
+    rerender(<ProjectDetailsDialog project={QA_PROJECT} onClose={vi.fn()} />)
+    expect(screen.queryByRole('link')).toBeNull()
+  })
+
   it('closes when the project goes back to null', () => {
     const { rerender } = render(<ProjectDetailsDialog project={ENGINEERING_PROJECT} onClose={vi.fn()} />)
     rerender(<ProjectDetailsDialog project={null} onClose={vi.fn()} />)

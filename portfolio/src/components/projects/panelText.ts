@@ -1,15 +1,16 @@
 import type { Project, ProjectType } from '../../../../shared/types/project'
 
 export const TYPE_LABELS: Readonly<Record<ProjectType, string>> = {
-  professional: 'Professional',
-  personal: 'Personal',
+  internal: 'Internal System',
+  external: 'External Project',
+  personal: 'Personal Project',
 }
 
 // Longest titles, in characters, that still get the larger type sizes.
 const LARGE_TITLE_MAX = 12
 const MEDIUM_TITLE_MAX = 18
 
-/** "Professional · Full-Stack Developer" */
+/** "External Project · Full-Stack Developer" */
 export function metaLine(project: Pick<Project, 'type' | 'role'>): string {
   return `${TYPE_LABELS[project.type]} · ${project.role}`
 }

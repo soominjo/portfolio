@@ -1,7 +1,10 @@
 export type ProjectCategory = 'engineering' | 'qa'
 
-/** Distinguishes side projects from work delivered for an employer or client. */
-export type ProjectType = 'personal' | 'professional'
+/**
+ * Who a project was built for: an employer's own internal system, an external
+ * project for a client or the public, or a personal side project.
+ */
+export type ProjectType = 'internal' | 'external' | 'personal'
 
 /** Colour of the laptop and phone a project is shown on in the showcase. */
 export type DeviceFinish = 'silver' | 'black' | 'white'
@@ -16,6 +19,8 @@ export interface Project {
   role: string
   category: ProjectCategory
   type: ProjectType
+  /** The project's public site; the showcase links to it when set. */
+  liveUrl?: string
   /** Desktop screenshot, shown on the showcase laptop. */
   imageUrl?: string
   /**
