@@ -10,29 +10,29 @@ function nameParts(): HTMLElement[] {
   )
 }
 
-const galaxyModule = vi.hoisted(() => ({ fail: false }))
+const particlesModule = vi.hoisted(() => ({ fail: false }))
 
-// The galaxy has its own tests and needs WebGL; here the hero only places it.
-vi.mock('../backgrounds/react-bits/Galaxy', () => ({
+// The particles have their own tests and need WebGL; here the hero only places them.
+vi.mock('../backgrounds/react-bits/Particles', () => ({
   default: () => {
-    if (galaxyModule.fail) throw new Error('galaxy chunk failed to load')
-    return <div data-testid="galaxy" />
+    if (particlesModule.fail) throw new Error('particles chunk failed to load')
+    return <div data-testid="particles" />
   },
 }))
 
 describe('Hero', () => {
   afterEach(() => {
-    galaxyModule.fail = false
+    particlesModule.fail = false
     vi.restoreAllMocks()
   })
 
-  it('shows the galaxy behind the name by default', async () => {
+  it('shows the particles behind the name by default', async () => {
     render(<Hero theme="dark" />)
-    expect(await screen.findByTestId('galaxy')).toBeInTheDocument()
+    expect(await screen.findByTestId('particles')).toBeInTheDocument()
   })
 
-  it('keeps the page when the galaxy fails to load', async () => {
-    galaxyModule.fail = true
+  it('keeps the page when the particles fail to load', async () => {
+    particlesModule.fail = true
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     render(<Hero theme="dark" />)
     await act(async () => {

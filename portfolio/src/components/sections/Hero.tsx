@@ -66,10 +66,10 @@ export function Hero({ theme }: HeroProps) {
         }}
       />
 
-      {/* WebGL background: the galaxy, or a lab candidate in dev and preview builds */}
+      {/* WebGL background: the particles, or a lab candidate in dev and preview builds */}
       <HeroBackground theme={theme} />
 
-      {/* Bottom fade: melts the galaxy into the page colour */}
+      {/* Bottom fade: melts the WebGL background into the page colour */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#05070f] to-transparent light:from-[#f7f9fc]" />
 
       {/* Name + rotating role. Vertically centred and nudged up (8% of the

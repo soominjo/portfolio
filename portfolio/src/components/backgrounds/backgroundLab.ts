@@ -1,22 +1,22 @@
 // Background lab: compare WebGL backgrounds in the hero before picking one.
 // It is on in development and in builds made with VITE_BG_LAB=1 (a Vercel
-// preview); a normal production build always shows the galaxy.
+// preview); a normal production build always shows the particles.
 
 export const BACKGROUND_PARAM = 'bg'
 
 // The first option is the default.
 export const BACKGROUND_OPTIONS = [
+  { id: 'particles', label: 'Particles' },
   { id: 'galaxy', label: 'Galaxy' },
   { id: 'sphere', label: 'Sphere' },
   { id: 'orb', label: 'Orb' },
-  { id: 'particles', label: 'Particles' },
   { id: 'topography', label: 'Topography' },
   { id: 'grid-scan', label: 'Grid Scan' },
 ] as const
 
 export type BackgroundId = (typeof BACKGROUND_OPTIONS)[number]['id']
 
-export const DEFAULT_BACKGROUND: BackgroundId = 'galaxy'
+export const DEFAULT_BACKGROUND: BackgroundId = 'particles'
 
 export interface LabEnv {
   DEV: boolean

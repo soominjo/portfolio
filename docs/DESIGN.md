@@ -382,17 +382,23 @@ exit={{ opacity: 0, height: 0 }}
 - Screen readers hear the whole list once ("A, B, C, and D"), not a new word every few seconds.
 - Reduced motion: first word only, with no rotation and no wipe.
 
-### Galaxy (hero background)
-- React Bits' Galaxy, a self-contained WebGL2 star field, lazy-loaded in its own chunk (`React.lazy`) inside `DecorativeBoundary`, so it never delays first paint and a failure only removes it.
-- Stars use the site palette (`#818cf8`, `#22d3ee`, `#6366f1`) and draw see-through over the grid and the gradient blobs. On the light theme they turn to ink-tinted stars.
-- They warp in over about 2 s, then drift toward the viewer while the field turns slowly. The cursor pushes nearby stars aside, and a click inside the hero sets off a short warp.
-- It pauses while off-screen or in a hidden tab. Reduced motion shows a still star field with no intro, drift or warp.
-- The dev background lab (`?bg=`, on in dev and in `VITE_BG_LAB=1` builds) still offers the displacement sphere and the other candidates.
+### Particles (hero background)
+- React Bits' Particles, a self-contained WebGL2 particle field, lazy-loaded in its own chunk (`React.lazy`) inside `DecorativeBoundary`, so it never delays first paint and a failure only removes it.
+- 200 glowing, twinkling dots in the site palette (`#818cf8`, `#22d3ee`, `#6366f1`). Faint lines join dots that sit within 110 px of each other at a similar depth. Everything draws see-through over the grid and the gradient blobs. On the light theme the dots turn ink-tinted, with less glow and no colour shimmer.
+- The dots fly in from the distance over about 1.8 s, then bob gently while the cloud turns slowly. The field shifts slightly against the cursor (parallax), and a click inside the hero sends out a ripple that pushes the dots outward and briefly brightens them.
+- It pauses while off-screen or in a hidden tab. Reduced motion shows a still field with no intro, bobbing, parallax or ripple.
+- The dev background lab (`?bg=`, on in dev and in `VITE_BG_LAB=1` builds) still offers the galaxy, the displacement sphere and the other candidates.
+
+Adapted from React Bits (MIT + Commons Clause). See `portfolio/THIRD_PARTY_NOTICES.md`.
+
+### Galaxy (lab alternative)
+- React Bits' Galaxy, a WebGL2 star field in the same palette. Production shows the particles instead; the galaxy is `?bg=galaxy` in the lab.
+- Stars warp in over about 2 s, then drift toward the viewer while the field turns slowly. The cursor pushes nearby stars aside, and a click inside the hero sets off a short warp. On the light theme they turn to ink-tinted stars.
 
 Adapted from React Bits (MIT + Commons Clause). See `portfolio/THIRD_PARTY_NOTICES.md`.
 
 ### Displacement Sphere (lab alternative)
-- A three.js noise-displaced sphere, lazy-loaded in its own chunk (`React.lazy`) so it never delays first paint. Production shows the galaxy instead; the sphere is `?bg=sphere` in the lab, and the chat orb reuses its shader.
+- A three.js noise-displaced sphere, lazy-loaded in its own chunk (`React.lazy`) so it never delays first paint. Production shows the particles instead; the sphere is `?bg=sphere` in the lab, and the chat orb reuses its shader.
 - The shader colours it indigo → cyan (`#6366f1` / `#22d3ee`), and it fades in to 85% opacity over 3 s.
 - It leans toward the cursor on a spring (`stiffness 30, damping 20, mass 2`), and its lighting follows the theme.
 - It pauses while off-screen, draws one still frame under reduced motion, and renders nothing when WebGL is unavailable.
@@ -409,7 +415,7 @@ Adapted from Hamish Williams' portfolio (MIT). See `portfolio/THIRD_PARTY_NOTICE
 - Scroll behavior: `scroll-smooth` on `html`
 - `min-h-screen` for hero section
 - Don't combine `desk:` and `lg:` on the same property. Tailwind emits custom variants after the breakpoint variants, so `desk:` always wins.
-- Hero: two lines only, left-aligned inside a centred column using hamishw.com's intro widths (780px, 920px above 1680px, 1024px above 2080px). The block is vertically centred and nudged up: 8vh on phones, 24px on desktop. On desktop, equal `desk:px-32` side padding keeps the column clear of the side nav and truly centred. Line one is the name on one line, as decoder text. It's white plus a glowing `text-indigo-400` surname in dark, and slate-900 plus `light:text-indigo-600` in light, which keeps the surname above 3:1 contrast. Line two is the rotating role. Under reduced motion the entrance is a plain fade (no slide). There is no scroll-down hint. A bottom gradient melts the galaxy into the page colour. The portrait is paused for now; the cut-out photo is kept in `src/assets/portrait*.webp` for later.
+- Hero: two lines only, left-aligned inside a centred column using hamishw.com's intro widths (780px, 920px above 1680px, 1024px above 2080px). The block is vertically centred and nudged up: 8vh on phones, 24px on desktop. On desktop, equal `desk:px-32` side padding keeps the column clear of the side nav and truly centred. Line one is the name on one line, as decoder text. It's white plus a glowing `text-indigo-400` surname in dark, and slate-900 plus `light:text-indigo-600` in light, which keeps the surname above 3:1 contrast. Line two is the rotating role. Under reduced motion the entrance is a plain fade (no slide). There is no scroll-down hint. A bottom gradient melts the particle field into the page colour. The portrait is paused for now; the cut-out photo is kept in `src/assets/portrait*.webp` for later.
 
 ---
 
