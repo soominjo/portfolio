@@ -24,7 +24,7 @@ export interface SkillMark {
   readonly light: string
 }
 
-export interface SkillItem {
+interface SkillItem {
   readonly name: string
   /** The brand logo, or null for skills shown as text (no logo exists). */
   readonly mark: SkillMark | null

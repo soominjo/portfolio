@@ -19,7 +19,7 @@ const DeviceStage = lazy(() => import('../three/devices/DeviceStage'))
 // The backdrop scenes are decorative too; the plain rings show until they load.
 const ProjectBackdrop = lazy(() => import('./backdrops/ProjectBackdrop').then((module) => ({ default: module.ProjectBackdrop })))
 
-export const STEP_PREFIX = 'project-step-'
+const STEP_PREFIX = 'project-step-'
 
 // Short screens shrink the devices and pull the rail down; very short ones
 // (phones held sideways) drop the devices and the rail so the text fits.

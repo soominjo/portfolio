@@ -4,7 +4,7 @@ const BEVEL = 0.012
 const CURVE_SEGMENTS = 10
 
 /** A rectangle with circular corners, centred on the origin. */
-export function roundedRectShape(width: number, height: number, radius: number): Shape {
+function roundedRectShape(width: number, height: number, radius: number): Shape {
   const r = Math.max(0.0001, Math.min(radius, width / 2, height / 2))
   const left = -width / 2
   const bottom = -height / 2

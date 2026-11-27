@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState, type FocusEvent } from 'react'
 
-export interface EngagementHandlers {
+interface EngagementHandlers {
   onPointerEnter(): void
   onPointerLeave(): void
   onPointerDown(): void

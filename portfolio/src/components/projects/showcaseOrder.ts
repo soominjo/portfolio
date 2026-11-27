@@ -3,7 +3,7 @@ import type { Project, ProjectCategory } from '../../../../shared/types/project'
 /** Categories in the order the showcase plays them. */
 const CATEGORY_ORDER: readonly ProjectCategory[] = ['engineering', 'qa']
 
-export const CATEGORY_LABELS: Readonly<Record<ProjectCategory, string>> = {
+const CATEGORY_LABELS: Readonly<Record<ProjectCategory, string>> = {
   engineering: 'Engineering',
   qa: 'QA Engineering',
 }

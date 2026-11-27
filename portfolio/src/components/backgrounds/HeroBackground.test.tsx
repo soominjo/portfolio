@@ -1,71 +1,49 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { HeroBackground } from './HeroBackground'
 
-const failing = vi.hoisted(() => ({ id: '' }))
-
-// Each background needs WebGL and has its own tests; here only the choice matters.
-vi.mock('./labBackgrounds', () => ({
-  LabBackground: ({ id }: { id: string }) => {
-    if (id === failing.id) throw new Error(`${id} failed`)
-    return <div data-testid="background" data-id={id} />
-  },
-}))
-
-function visit(search: string): void {
-  window.history.replaceState(null, '', `/${search}`)
+interface ParticlesStandInProps {
+  particleColors?: string[]
+  connections?: boolean
+  lightMode?: boolean
 }
 
+// The real particles need WebGL and have their own StrictMode test; this
+// stand-in exposes the props the hero gives them.
+vi.mock('./react-bits/Particles', () => ({
+  default: ({ particleColors, connections, lightMode }: ParticlesStandInProps) => (
+    <div
+      data-testid="particles"
+      data-colors={particleColors?.join(' ')}
+      data-connections={String(connections)}
+      data-light={String(lightMode)}
+    />
+  ),
+}))
+
 describe('HeroBackground', () => {
-  afterEach(() => {
-    failing.id = ''
-    visit('')
-    vi.restoreAllMocks()
+  it('draws the particles in the site palette, joined by lines', async () => {
+    render(<HeroBackground theme="dark" />)
+    const particles = await screen.findByTestId('particles')
+    expect(particles).toHaveAttribute('data-colors', '#818cf8 #22d3ee #6366f1')
+    expect(particles).toHaveAttribute('data-connections', 'true')
+    expect(particles).toHaveAttribute('data-light', 'false')
   })
 
-  it('shows the particles and no picker outside the lab, whatever the URL says', () => {
-    visit('?bg=sphere')
-    render(<HeroBackground theme="dark" labEnabled={false} />)
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'particles')
+  it('puts the particles in their light mode on the light theme', async () => {
+    render(<HeroBackground theme="light" />)
+    expect(await screen.findByTestId('particles')).toHaveAttribute('data-light', 'true')
+  })
+
+  it('keeps the layer decorative: hidden from assistive tech and click-through', async () => {
+    render(<HeroBackground theme="dark" />)
+    const layer = (await screen.findByTestId('particles')).closest('[aria-hidden="true"]')
+    expect(layer).toHaveClass('pointer-events-none', 'absolute', 'inset-0')
+  })
+
+  it('has no background picker, even in development', async () => {
+    render(<HeroBackground theme="dark" />)
+    await screen.findByTestId('particles')
     expect(screen.queryByRole('group', { name: 'Hero background' })).not.toBeInTheDocument()
-  })
-
-  it('opens on the background named in the URL', () => {
-    visit('?bg=sphere')
-    render(<HeroBackground theme="dark" labEnabled />)
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'sphere')
-    expect(screen.getByRole('button', { name: 'Sphere' })).toHaveAttribute('aria-pressed', 'true')
-  })
-
-  it('switches background and keeps the choice in the URL', () => {
-    render(<HeroBackground theme="dark" labEnabled />)
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'particles')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Orb' }))
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'orb')
-    expect(window.location.search).toBe('?bg=orb')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Particles' }))
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'particles')
-    expect(window.location.search).toBe('')
-  })
-
-  it('keeps other params and the hash when it records the choice', () => {
-    visit('?utm=x#about')
-    render(<HeroBackground theme="dark" labEnabled />)
-    fireEvent.click(screen.getByRole('button', { name: 'Orb' }))
-    expect(window.location.search).toBe('?utm=x&bg=orb')
-    expect(window.location.hash).toBe('#about')
-  })
-
-  it('recovers when you switch away from a background that failed', () => {
-    vi.spyOn(console, 'error').mockImplementation(() => {})
-    failing.id = 'orb'
-    visit('?bg=orb')
-    render(<HeroBackground theme="dark" labEnabled />)
-    expect(screen.queryByTestId('background')).not.toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Sphere' }))
-    expect(screen.getByTestId('background')).toHaveAttribute('data-id', 'sphere')
   })
 })

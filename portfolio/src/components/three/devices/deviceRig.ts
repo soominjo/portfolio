@@ -8,14 +8,14 @@ import { createShadow } from './sceneSetup'
 import { createShadowTexture } from './shadowTexture'
 
 /** The whole composition turns a little to the left, like a product shot. */
-export const RIG_TURN_Y = -0.32
+const RIG_TURN_Y = -0.32
 const RIG_OFFSET_X = -0.15
 const PHONE_SPOT = { x: 1.95, z: 0.6, turnY: -0.25 } as const
 // Where the phone waits, below and slightly smaller, while it is away.
 const PHONE_AWAY = { y: -0.9, scale: 0.85 } as const
 
 /** Everything the animation decides each frame. */
-export interface DevicePose {
+interface DevicePose {
   readonly lidAngle: number
   readonly laptopX: number
   /** 0 = phone away, 1 = standing in place. */

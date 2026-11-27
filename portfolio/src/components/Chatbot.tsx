@@ -5,7 +5,7 @@ import { ChatTerminal } from './chat/ChatTerminal'
 import { useChat } from './chat/useChat'
 import { useDocumentTheme } from './chat/useDocumentTheme'
 
-export const CHAT_TERMINAL_ID = 'chat-terminal'
+const CHAT_TERMINAL_ID = 'chat-terminal'
 
 /**
  * Gens' AI assistant: a living 3D orb in the corner that opens the holo

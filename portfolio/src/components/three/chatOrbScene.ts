@@ -13,7 +13,6 @@ import {
   type Light,
 } from 'three'
 import type { Theme } from '../../hooks/useTheme'
-import type { LightIntensities } from './sphereScene'
 import { patchPhongShader, SPHERE_PALETTE } from './sphereShader'
 
 export interface Point {
@@ -25,6 +24,11 @@ export interface Point {
 export interface OrbLean {
   readonly x: number
   readonly y: number
+}
+
+interface LightIntensities {
+  readonly directional: number
+  readonly ambient: number
 }
 
 export interface ChatOrbScene {
@@ -40,7 +44,7 @@ const CAMERA_FOV = 54
 const CAMERA_Z = 52
 const ORB_RADIUS = 17
 const ORB_SEGMENTS = 64
-// About half the hero's bumps, so the orb reads as a soft blob at button size.
+// About half the shader's full bumps, so the orb reads as a soft blob at button size.
 const DISPLACEMENT_SCALE = 0.55
 const NOISE_SPEED = 0.00009
 const SPIN_SPEED = 0.00009

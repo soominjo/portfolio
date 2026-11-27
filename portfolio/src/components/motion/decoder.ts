@@ -1,6 +1,6 @@
 // Adapted from https://github.com/HamishMW/portfolio (MIT, Copyright (c) 2020 Hamish Williams). See THIRD_PARTY_NOTICES.md.
 
-export type CharType = 'glyph' | 'value'
+type CharType = 'glyph' | 'value'
 
 export interface DecoderChar {
   readonly type: CharType

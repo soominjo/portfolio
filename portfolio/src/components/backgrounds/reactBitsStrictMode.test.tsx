@@ -1,11 +1,7 @@
 import { render } from '@testing-library/react'
-import { type ComponentType, StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import Galaxy from './react-bits/Galaxy'
-import GridScan from './react-bits/GridScan'
-import Orb from './react-bits/Orb'
 import Particles from './react-bits/Particles'
-import Topography from './react-bits/Topography'
 
 interface FakeWebGl {
   gl: WebGL2RenderingContext
@@ -51,7 +47,7 @@ function createFakeWebGl(): FakeWebGl {
   return { gl: gl as WebGL2RenderingContext, loseContext }
 }
 
-// The colour probe some backgrounds use to turn CSS colours into RGB.
+// The colour probe the particles use to turn CSS colours into RGB.
 function createFake2d(): object {
   return {
     clearRect: () => {},
@@ -79,31 +75,23 @@ function installFakeWebGl(): FakeWebGl {
   return fake
 }
 
-const BACKGROUNDS: ReadonlyArray<readonly [string, ComponentType]> = [
-  ['Orb', Orb],
-  ['Galaxy', Galaxy],
-  ['Particles', Particles],
-  ['Topography', Topography],
-  ['GridScan', GridScan],
-]
-
 // StrictMode mounts, unmounts and remounts every effect in development. A
 // background that loses its context in that cleanup comes back on a dead
 // context and draws an opaque white layer over the hero.
-describe('React Bits backgrounds under StrictMode', () => {
+describe('React Bits particles under StrictMode', () => {
   afterEach(() => {
     vi.useRealTimers()
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
   })
 
-  it.each(BACKGROUNDS)('%s keeps its WebGL context through the dev remount', (_name, Background) => {
+  it('keeps their WebGL context through the dev remount', () => {
     // Frames are faked so a release deferred to the next frame actually fires.
     vi.useFakeTimers({ toFake: ['requestAnimationFrame', 'cancelAnimationFrame'] })
     const { loseContext } = installFakeWebGl()
     const { unmount } = render(
       <StrictMode>
-        <Background />
+        <Particles />
       </StrictMode>,
     )
     vi.advanceTimersToNextFrame()

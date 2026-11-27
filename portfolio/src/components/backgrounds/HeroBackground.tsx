@@ -1,35 +1,29 @@
-import { Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import type { Theme } from '../../hooks/useTheme'
 import { DecorativeBoundary } from '../DecorativeBoundary'
-import { isBackgroundLabEnabled } from './backgroundLab'
-import { BackgroundSwitcher } from './BackgroundSwitcher'
-import { LabBackground } from './labBackgrounds'
-import { useBackgroundChoice } from './useBackgroundChoice'
 
-const LAB_ENABLED = isBackgroundLabEnabled(import.meta.env)
+// WebGL code is heavy, so the particles are their own chunk that loads after first paint.
+const Particles = lazy(() => import('./react-bits/Particles'))
+
+// Indigo light, cyan and indigo, from docs/DESIGN.md.
+const PARTICLE_COLORS = ['#818cf8', '#22d3ee', '#6366f1']
 
 interface HeroBackgroundProps {
   theme: Theme
-  labEnabled?: boolean
 }
 
 /**
- * The hero's WebGL layer. Production always shows the particles.
- * In the lab (dev, or a VITE_BG_LAB=1 preview) a picker swaps in the other
- * candidates. Each one is decorative, so a failure only removes it, and the
- * boundary resets when you switch.
+ * The hero's WebGL layer: React Bits particles in the site palette. It is
+ * decorative, so a failure only removes it.
  */
-export function HeroBackground({ theme, labEnabled = LAB_ENABLED }: HeroBackgroundProps) {
-  const [choice, choose] = useBackgroundChoice(labEnabled)
-
+export function HeroBackground({ theme }: HeroBackgroundProps) {
   return (
-    <>
-      <DecorativeBoundary key={choice}>
-        <Suspense fallback={null}>
-          <LabBackground id={choice} theme={theme} className="pointer-events-none absolute inset-0" />
-        </Suspense>
-      </DecorativeBoundary>
-      {labEnabled && <BackgroundSwitcher value={choice} onChange={choose} />}
-    </>
+    <DecorativeBoundary>
+      <Suspense fallback={null}>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <Particles particleColors={PARTICLE_COLORS} connections lightMode={theme === 'light'} />
+        </div>
+      </Suspense>
+    </DecorativeBoundary>
   )
 }

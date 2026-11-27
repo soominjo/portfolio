@@ -13,7 +13,7 @@ export interface ChatTerminalProps {
 }
 
 /** Lets the hinge swing start before the cursor lands in the input. */
-export const FOCUS_DELAY_MS = 150
+const FOCUS_DELAY_MS = 150
 
 const MESSAGE_MAX_LENGTH = 500
 const SWING = { duration: 0.9, ease: [0.22, 1, 0.36, 1] } as const

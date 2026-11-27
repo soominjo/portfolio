@@ -145,7 +145,7 @@ varying float vNoise;
 ${NOISE_GLSL}`
 
 export interface PatchOptions {
-  /** Shrinks or grows the noise bumps. Omit it to keep the hero sphere exactly as it is. */
+  /** Shrinks or grows the noise bumps. Omit it for the full-size bumps. */
   readonly displacementScale?: number
 }
 
